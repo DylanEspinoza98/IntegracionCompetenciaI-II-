@@ -1,5 +1,5 @@
 
-package gestion_de_asistencia.Clases;
+package Clases;
 
 /**
  *

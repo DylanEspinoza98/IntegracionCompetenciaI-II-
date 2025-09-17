@@ -1,4 +1,4 @@
-package Clases.BD;
+package Clases_BD;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import java.sql.*;
