@@ -1,4 +1,4 @@
-package gestion_de_asistencia.Clases;
+package Clases;
 import java.time.LocalDate;
 import java.time.LocalTime;
 

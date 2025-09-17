@@ -1,20 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package gestion_de_asistencia;
+import Clases_BD.Comm_BD;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author dolan
  */
 public class Interfaz_Principal extends javax.swing.JFrame {
+    Comm_BD Bd;
 
     /**
      * Creates new form Interfaz_InicioSesion
      */
     public Interfaz_Principal() {
         initComponents();
+        Bd = new Comm_BD();
+        
     }
 
     /**
@@ -28,59 +29,106 @@ public class Interfaz_Principal extends javax.swing.JFrame {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
-        Inicio_Sesion = new javax.swing.JButton();
-        Registrar_Asistencia = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        tf_CorreoProfesional = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        pf_Contrasena = new javax.swing.JPasswordField();
+        jSeparator1 = new javax.swing.JSeparator();
+        btn_inicioSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Bienvenido");
+        jDesktopPane1.setBackground(new java.awt.Color(102, 102, 102));
+        jDesktopPane1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        Inicio_Sesion.setText("Iniciar Sesion");
-        Inicio_Sesion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Inicio_SesionActionPerformed(evt);
-            }
-        });
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Bienvenido al registro de asistencia ");
 
-        Registrar_Asistencia.setText("Registrar Asistencia");
-        Registrar_Asistencia.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setText("Inicie Sesion");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Correo Profesional");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Contraseña");
+
+        btn_inicioSesion.setText("Iniciar Sesion");
+        btn_inicioSesion.setToolTipText("");
+        btn_inicioSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Registrar_AsistenciaActionPerformed(evt);
+                btn_inicioSesionActionPerformed(evt);
             }
         });
 
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(Inicio_Sesion, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(Registrar_Asistencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(tf_CorreoProfesional, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(pf_Contrasena, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jSeparator1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_inicioSesion, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator1))
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(jLabel1))
+                            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                .addGap(170, 170, 170)
+                                .addComponent(jLabel2)))
+                        .addGap(0, 19, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(88, 88, 88))
+                        .addComponent(jLabel3)
+                        .addGap(125, 125, 125))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                        .addComponent(Inicio_Sesion)
-                        .addGap(65, 65, 65))))
-            .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(Registrar_Asistencia)
-                .addGap(0, 51, Short.MAX_VALUE))
+                        .addComponent(jLabel4)
+                        .addGap(155, 155, 155))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(pf_Contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tf_CorreoProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(111, 111, 111))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                        .addComponent(btn_inicioSesion)
+                        .addGap(148, 148, 148))))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_CorreoProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pf_Contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(Inicio_Sesion)
-                .addGap(80, 80, 80)
-                .addComponent(Registrar_Asistencia)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addComponent(btn_inicioSesion)
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -97,16 +145,33 @@ public class Interfaz_Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Inicio_SesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Inicio_SesionActionPerformed
-        this.dispose();
-        new Interfaz_Admin().setVisible(true);
-    }//GEN-LAST:event_Inicio_SesionActionPerformed
-
-    private void Registrar_AsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Registrar_AsistenciaActionPerformed
+    private void btn_inicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inicioSesionActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        new Interfaz_Registro().setVisible(true);
-    }//GEN-LAST:event_Registrar_AsistenciaActionPerformed
+        String Correo = tf_CorreoProfesional.getText();
+        String Pass = new String(pf_Contrasena.getPassword());
+        boolean Verificador = Bd.VerificacionUsuarioContrasena(Correo, Pass);
+        if(Verificador == true){
+            int Rol = Bd.GetId_RolUsuario(Correo);
+            switch (Rol){
+                case 1:
+                    new Interfaz_Asistencia().setVisible(true);
+                    this.setVisible(false);
+                    break;
+                case 2: 
+                    new Interfaz_Asistencia().setVisible(true);
+                    this.setVisible(false);
+                    break;
+                case 3:
+                    JOptionPane.showMessageDialog(null, "Error al iniciar sesión", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+            }
+        }else if (Correo.isEmpty() || Pass.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese Su correo y Contraseña para iniciar Sesion", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }else if (Verificador == false){
+            JOptionPane.showMessageDialog(null, "Correo o Contrasena estan mal escritos", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+            
+    }//GEN-LAST:event_btn_inicioSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,9 +210,14 @@ public class Interfaz_Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Inicio_Sesion;
-    private javax.swing.JButton Registrar_Asistencia;
+    private javax.swing.JButton btn_inicioSesion;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPasswordField pf_Contrasena;
+    private javax.swing.JTextField tf_CorreoProfesional;
     // End of variables declaration//GEN-END:variables
 }

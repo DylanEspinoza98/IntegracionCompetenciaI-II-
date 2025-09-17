@@ -8,12 +8,12 @@ package gestion_de_asistencia;
  *
  * @author dolan
  */
-public class Interfaz_Admin extends javax.swing.JFrame {
+public class Interfaz_Asistencia extends javax.swing.JFrame {
 
     /**
-     * Creates new form Interfaz_Admin
+     * Creates new form Interfaz_Asistencia
      */
-    public Interfaz_Admin() {
+    public Interfaz_Asistencia() {
         initComponents();
     }
 
