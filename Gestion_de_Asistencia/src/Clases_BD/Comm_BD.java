@@ -1,6 +1,8 @@
 package Clases_BD;
+import Clases.Usuario;
 import java.awt.Component;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -37,17 +39,35 @@ public class Comm_BD {
     
     //Verificar si la contraseña coincide con el correo ingresado
     
-    public boolean VerificacionUsuarioContrasena (String Correo, String Contrasena){
-      boolean verificador;
-      try{
-            Statement st = Con.createStatement();
-            ResultSet rs = st.executeQuery("select correo, password from usuarios where correo = '" + Correo +"' and '"+Contrasena+"';");
-            if(rs.next()){
-                return verificador = true;
+    public Usuario VerificacionUsuario(String correo, String contrasena) {
+    Usuario usuarioEncontrado = null;
+
+    try {
+        Statement st = Con.createStatement();
+        ResultSet rs = st.executeQuery(
+            "SELECT u.id AS Id, u.nombre AS Nombre, u.correo AS Correo, " +
+            "u.password AS Contrasena, u.id_rol AS Rol FROM usuarios u"
+        );
+
+        while (rs.next()) {
+            Usuario u = new Usuario();
+            u.setId(rs.getInt("Id"));
+            u.setNombre(rs.getString("Nombre"));
+            u.setCorreo(rs.getString("Correo"));
+            u.setContrasena(rs.getString("Contrasena"));
+            u.setRol(rs.getInt("Rol"));
+
+            if (u.validarLogin(correo, contrasena)) {
+                usuarioEncontrado = u; // lo guardamos
+                break; // dejamos de buscar
             }
-        }catch(SQLException ex){
-            Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE,null,ex);
         }
-      return verificador = false;
+    } catch (SQLException ex) {
+        Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, null, ex);
     }
+
+    return usuarioEncontrado; // si es null, no existe
+    }
+
+
 }
