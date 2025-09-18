@@ -1,4 +1,5 @@
 package gestion_de_asistencia;
+import Clases.Usuario;
 import Clases_BD.Comm_BD;
 import javax.swing.JOptionPane;
 
@@ -147,29 +148,18 @@ public class Interfaz_Principal extends javax.swing.JFrame {
 
     private void btn_inicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inicioSesionActionPerformed
         // TODO add your handling code here:
-        String Correo = tf_CorreoProfesional.getText();
+        // TODO add your handling code here:
         String Pass = new String(pf_Contrasena.getPassword());
-        boolean Verificador = Bd.VerificacionUsuarioContrasena(Correo, Pass);
-        if(Verificador == true){
-            int Rol = Bd.GetId_RolUsuario(Correo);
-            switch (Rol){
-                case 1:
-                    new Interfaz_Asistencia().setVisible(true);
-                    this.setVisible(false);
-                    break;
-                case 2: 
-                    new Interfaz_Asistencia().setVisible(true);
-                    this.setVisible(false);
-                    break;
-                case 3:
-                    JOptionPane.showMessageDialog(null, "Error al iniciar sesión", "Error", JOptionPane.ERROR_MESSAGE);
-                    break;
+        Usuario U = Bd.VerificacionUsuario(tf_CorreoProfesional.getText(), Pass);
+
+        if (U != null) {
+            if (U.getRol() == 1 || U.getRol() == 2){
+                new Interfaz_Asistencia(U).setVisible(true);
+                this.setVisible(false);
             }
-        }else if (Correo.isEmpty() || Pass.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Ingrese Su correo y Contraseña para iniciar Sesion", "Info", JOptionPane.INFORMATION_MESSAGE);
-        }else if (Verificador == false){
-            JOptionPane.showMessageDialog(null, "Correo o Contrasena estan mal escritos", "Info", JOptionPane.INFORMATION_MESSAGE);
-        }
+        } else {
+            JOptionPane.showMessageDialog(null, "Credenciales inválidas");
+        }  
             
     }//GEN-LAST:event_btn_inicioSesionActionPerformed
 
