@@ -4,6 +4,9 @@
  */
 package gestion_de_asistencia;
 
+import Clases.Usuario;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author dolan
@@ -13,8 +16,9 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
     /**
      * Creates new form Interfaz_Asistencia
      */
-    public Interfaz_Asistencia() {
+    public Interfaz_Asistencia(Usuario U) {
         initComponents();
+        JOptionPane.showMessageDialog(null, "Bienvenido " + U.getNombre());
     }
 
     /**
