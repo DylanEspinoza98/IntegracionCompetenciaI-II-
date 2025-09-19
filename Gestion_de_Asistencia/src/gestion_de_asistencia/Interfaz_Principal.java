@@ -153,7 +153,7 @@ public class Interfaz_Principal extends javax.swing.JFrame {
         if (u != null) {
             if(u.getRol() == 1 || u.getRol() == 2){
                 new Interfaz_Asistencia(u).setVisible(true);
-                this.setVisible(false);
+                this.dispose();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Credenciales inválidas");

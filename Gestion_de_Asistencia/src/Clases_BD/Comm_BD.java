@@ -19,26 +19,7 @@ public class Comm_BD {
         Con = Conn_BD.getConnection();
     };
     
-    //Verificar el id del rol del usuario para permitir ingreso al sistema de registro
-    public int GetId_RolUsuario(String Correo){
-        int ID_rol = 0;
-        try{
-            Statement st = Con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT us.id_rol as 'Rol' FROM usuarios us WHERE us.correo = '" + Correo + "';");
-            if(rs.next()){
-                String parsearId = rs.getString("Rol");
-                ID_rol = Integer.parseInt(parsearId);
-                return ID_rol;
-            }
-            
-        }catch(SQLException ex){
-            Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE,null,ex);
-        }
-        return ID_rol;
-    }
-    
     //Verificar si la contraseña coincide con el correo ingresado
-    
     public Usuario VerificacionUsuario(String correo, String contrasena) {
     Usuario usuarioEncontrado = null;
 
