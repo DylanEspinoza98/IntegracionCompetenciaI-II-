@@ -1,5 +1,8 @@
 package Clases_BD;
+import Clases.Usuario;
 import java.awt.Component;
+
+//Import para Sql
 import java.sql.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -17,37 +20,57 @@ public class Comm_BD {
         Con = Conn_BD.getConnection();
     };
     
-    //Verificar el id del rol del usuario para permitir ingreso al sistema de registro
-    public int GetId_RolUsuario(String Correo){
-        int ID_rol = 0;
-        try{
-            Statement st = Con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT us.id_rol as 'Rol' FROM usuarios us WHERE us.correo = '" + Correo + "';");
-            if(rs.next()){
-                String parsearId = rs.getString("Rol");
-                ID_rol = Integer.parseInt(parsearId);
-                return ID_rol;
+    //Verificar si la contraseña coincide con el correo ingresado
+    public Usuario VerificacionUsuario(String correo, String contrasena) {
+    Usuario usuarioEncontrado = null;
+
+    try {
+        Statement st = Con.createStatement();
+        ResultSet rs = st.executeQuery(
+            "SELECT u.id AS Id, u.nombre AS Nombre,u.apellido as Apellido ,u.correo AS Correo, " +
+            "u.password AS Contrasena, u.id_rol AS Rol FROM usuarios u"
+        );
+
+        while (rs.next()) {
+            Usuario u = new Usuario();
+            u.setId(rs.getInt("Id"));
+            u.setApellido(rs.getString("Apellido"));
+            u.setNombre(rs.getString("Nombre"));
+            u.setCorreo(rs.getString("Correo"));
+            u.setContrasena(rs.getString("Contrasena"));
+            u.setRol(rs.getInt("Rol"));
+
+            if (u.validarLogin(correo, contrasena)) {
+                usuarioEncontrado = u; // lo guardamos
+                break; // dejamos de buscar
             }
-            
-        }catch(SQLException ex){
-            Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE,null,ex);
         }
-        return ID_rol;
+    } catch (SQLException ex) {
+        Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    return usuarioEncontrado; // si es null, no existe
     }
     
-    //Verificar si la contraseña coincide con el correo ingresado
-    
-    public boolean VerificacionUsuarioContrasena (String Correo, String Contrasena){
-      boolean verificador;
-      try{
-            Statement st = Con.createStatement();
-            ResultSet rs = st.executeQuery("select correo, password from usuarios where correo = '" + Correo +"' and '"+Contrasena+"';");
-            if(rs.next()){
-                return verificador = true;
-            }
-        }catch(SQLException ex){
-            Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE,null,ex);
+    public void DAO_crearUsuario(Usuario U, Date FechaIngreso) {
+        String Sql = "Insert into usuarios (rut, nombre, apellido, correo, password, id_rol, id_area_trabajo, activo, fecha_ingreso, telefono, direccion, fecha_creacion, fecha_modificacion) VALUES (?,?, ?, ?, ?, ?, null, ?, ?, ?, ?, Current_TimeStamp, null)";
+                                           
+        try (PreparedStatement ps = Con.prepareStatement(Sql);) {
+            ps.setString(1, U.getRut());
+            ps.setString(2, U.getNombre());
+            ps.setString(3, U.getApellido());
+            ps.setString(4, U.getCorreo());
+            ps.setString(5, U.getContrasena());
+            ps.setInt(6, U.getRol());
+            ps.setBoolean(7, true);
+            ps.setDate(8, FechaIngreso);
+            ps.setString(9, U.getTelefono());
+            ps.setString(10, U.getDireccion()); 
+            
+            ps.executeUpdate();
+        
+        } catch (SQLException ex) {
+        Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, null, ex);
         }
-      return verificador = false;
     }
 }

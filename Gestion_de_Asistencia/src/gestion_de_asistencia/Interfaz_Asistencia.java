@@ -4,17 +4,23 @@
  */
 package gestion_de_asistencia;
 
+import Clases.Usuario;
+import javax.swing.JOptionPane;
 /**
  *
  * @author dolan
  */
 public class Interfaz_Asistencia extends javax.swing.JFrame {
-
+    Usuario U_Loggeado;
     /**
      * Creates new form Interfaz_Asistencia
+     * @param U
      */
-    public Interfaz_Asistencia() {
+    public Interfaz_Asistencia(Usuario U) {
         initComponents();
+        U_Loggeado = U;
+        JOptionPane.showMessageDialog(null, "Bienvenido " + U_Loggeado.getNombre());
+        Admin_Name.setText(U_Loggeado.getNombre());
     }
 
     /**
@@ -26,26 +32,247 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jDesktopPane1 = new javax.swing.JDesktopPane();
+        Rut_User = new javax.swing.JTextField();
+        EnviarAsistencia = new javax.swing.JButton();
+        btn_GenerarReporte = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        btn_EditarUsuario = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        btn_IngresarContextoAusencia = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        Admin_Name = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        Observacion = new javax.swing.JTextField();
+        btn_CerrarSesion = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jDesktopPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        EnviarAsistencia.setText("Ingresar Asistencia");
+
+        btn_GenerarReporte.setText("Generar Reporte");
+
+        jLabel3.setText("Rut Trabajador");
+
+        jLabel4.setText("Observacion");
+
+        jLabel5.setFont(new java.awt.Font("Stencil", 1, 24)); // NOI18N
+        jLabel5.setText("Gestion de Asistencia");
+
+        btn_EditarUsuario.setText("Crear/Modificar Usuarios");
+        btn_EditarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EditarUsuarioActionPerformed(evt);
+            }
+        });
+
+        btn_IngresarContextoAusencia.setText("Aqui");
+        btn_IngresarContextoAusencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_IngresarContextoAusenciaActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Bienvenido ");
+
+        Admin_Name.setText("Usuario xd");
+
+        jLabel2.setText("En caso que desee ingresar un permiso, ");
+
+        jLabel6.setText("Vacaciones o Licencias Medicas de un Usuario Ingrese Aqui:");
+
+        jLabel7.setText("Ingrese el Rut del Usuario para Registrar la Asistencia");
+
+        btn_CerrarSesion.setText("Cerrar Sesion");
+        btn_CerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CerrarSesionActionPerformed(evt);
+            }
+        });
+
+        jDesktopPane1.setLayer(Rut_User, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(EnviarAsistencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_GenerarReporte, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jSeparator1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_EditarUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jSeparator2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_IngresarContextoAusencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(Admin_Name, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(Observacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_CerrarSesion, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(107, 107, 107)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(85, 85, 85)
+                        .addComponent(jLabel1)
+                        .addGap(42, 42, 42)
+                        .addComponent(Admin_Name))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(79, 79, 79)
+                .addComponent(btn_GenerarReporte)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_EditarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70))
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_CerrarSesion))
+                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                            .addGap(53, 53, 53)
+                            .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                    .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(Observacion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(32, 32, 32)
+                                    .addComponent(EnviarAsistencia))
+                                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel7)
+                                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(89, 89, 89)
+                                        .addComponent(jLabel4)
+                                        .addGap(174, 174, 174)))
+                                .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel6))
+                                    .addGap(39, 39, 39)
+                                    .addComponent(btn_IngresarContextoAusencia))))
+                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                            .addGap(27, 27, 27)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 31, Short.MAX_VALUE))
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(btn_CerrarSesion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(Admin_Name))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(13, 13, 13)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Observacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(EnviarAsistencia))
+                        .addGap(18, 18, 18)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6))
+                    .addComponent(btn_IngresarContextoAusencia))
+                .addGap(87, 87, 87)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_GenerarReporte)
+                    .addComponent(btn_EditarUsuario))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_IngresarContextoAusenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IngresarContextoAusenciaActionPerformed
+        // TODO add your handling code here:
+        new Interfaz_AusenciaLaboral().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btn_IngresarContextoAusenciaActionPerformed
+
+    private void btn_EditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarUsuarioActionPerformed
+        // TODO add your handling code here:
+        
+        //Se Verifica que el Usuario conectado sea Administrador
+        if(U_Loggeado.getRol() == 1){
+            new Interfaz_ModificarUsuarios().setVisible(true);
+            this.setVisible(false);
+        } else {
+            //Caso de ser Supervisor se le notificara
+            JOptionPane.showMessageDialog(null, U_Loggeado.getNombre() + " No Tienes Acceso a estas Opciones");
+        }
+        
+
+    }//GEN-LAST:event_btn_EditarUsuarioActionPerformed
+
+    private void btn_CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CerrarSesionActionPerformed
+        // TODO add your handling code here:
+        new Interfaz_Principal().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_CerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Admin_Name;
+    private javax.swing.JButton EnviarAsistencia;
+    private javax.swing.JTextField Observacion;
+    private javax.swing.JTextField Rut_User;
+    private javax.swing.JButton btn_CerrarSesion;
+    private javax.swing.JButton btn_EditarUsuario;
+    private javax.swing.JButton btn_GenerarReporte;
+    private javax.swing.JButton btn_IngresarContextoAusencia;
+    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }

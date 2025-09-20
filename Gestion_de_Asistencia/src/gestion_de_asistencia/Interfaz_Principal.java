@@ -1,4 +1,5 @@
 package gestion_de_asistencia;
+import Clases.Usuario;
 import Clases_BD.Comm_BD;
 import javax.swing.JOptionPane;
 
@@ -99,15 +100,19 @@ public class Interfaz_Principal extends javax.swing.JFrame {
                         .addGap(125, 125, 125))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(155, 155, 155))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(155, 155, 155))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addContainerGap(115, Short.MAX_VALUE)
                         .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pf_Contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_CorreoProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(111, 111, 111))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                            .addComponent(tf_CorreoProfesional, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pf_Contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(33, 162, Short.MAX_VALUE)
                         .addComponent(btn_inicioSesion)
-                        .addGap(148, 148, 148))))
+                        .addGap(37, 37, 37)))
+                .addGap(111, 111, 111))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,30 +152,16 @@ public class Interfaz_Principal extends javax.swing.JFrame {
 
     private void btn_inicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inicioSesionActionPerformed
         // TODO add your handling code here:
-        String Correo = tf_CorreoProfesional.getText();
         String Pass = new String(pf_Contrasena.getPassword());
-        boolean Verificador = Bd.VerificacionUsuarioContrasena(Correo, Pass);
-        if(Verificador == true){
-            int Rol = Bd.GetId_RolUsuario(Correo);
-            switch (Rol){
-                case 1:
-                    new Interfaz_Asistencia().setVisible(true);
-                    this.setVisible(false);
-                    break;
-                case 2: 
-                    new Interfaz_Asistencia().setVisible(true);
-                    this.setVisible(false);
-                    break;
-                case 3:
-                    JOptionPane.showMessageDialog(null, "Error al iniciar sesión", "Error", JOptionPane.ERROR_MESSAGE);
-                    break;
+        Usuario u = Bd.VerificacionUsuario(tf_CorreoProfesional.getText(), Pass);
+        if (u != null) {
+            if(u.getRol() == 1 || u.getRol() == 2){
+                new Interfaz_Asistencia(u).setVisible(true);
+                this.dispose();
             }
-        }else if (Correo.isEmpty() || Pass.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Ingrese Su correo y Contraseña para iniciar Sesion", "Info", JOptionPane.INFORMATION_MESSAGE);
-        }else if (Verificador == false){
-            JOptionPane.showMessageDialog(null, "Correo o Contrasena estan mal escritos", "Info", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Credenciales inválidas");
         }
-            
     }//GEN-LAST:event_btn_inicioSesionActionPerformed
 
     /**
