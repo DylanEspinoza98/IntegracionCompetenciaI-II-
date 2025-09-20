@@ -5,22 +5,22 @@
 package gestion_de_asistencia;
 
 import Clases.Usuario;
-import java.util.HashSet;import java.util.Set;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author dolan
  */
 public class Interfaz_Asistencia extends javax.swing.JFrame {
-
+    Usuario U_Loggeado;
     /**
      * Creates new form Interfaz_Asistencia
+     * @param U
      */
     public Interfaz_Asistencia(Usuario U) {
         initComponents();
-        JOptionPane.showMessageDialog(null, "Bienvenido " + U.getNombre());
-        Admin_Name.setText(U.getNombre().toString());
+        U_Loggeado = U;
+        JOptionPane.showMessageDialog(null, "Bienvenido " + U_Loggeado.getNombre());
+        Admin_Name.setText(U_Loggeado.getNombre());
     }
 
     /**
@@ -186,9 +186,9 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                 .addGap(1, 1, 1)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(13, 13, 13)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
@@ -232,8 +232,16 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
 
     private void btn_EditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarUsuarioActionPerformed
         // TODO add your handling code here:
-        new Interfaz_ModificarUsuarios().setVisible(true);
-        this.setVisible(false);
+        
+        //Se Verifica que el Usuario conectado sea Administrador
+        if(U_Loggeado.getRol() == 1){
+            new Interfaz_ModificarUsuarios().setVisible(true);
+            this.setVisible(false);
+        } else {
+            //Caso de ser Supervisor se le notificara
+            JOptionPane.showMessageDialog(null, U_Loggeado.getNombre() + " No Tienes Acceso a estas Opciones");
+        }
+        
 
     }//GEN-LAST:event_btn_EditarUsuarioActionPerformed
 
