@@ -7,14 +7,12 @@ package Clases;
  */
 public class Usuario {
     private int Id;
+    private String Rut;
     private String Nombre;
     private String Apellido;
-    private String Rut;
     private String Correo;
     private String Contrasena;
-    private int rol;
-    private String telefono;
-    private String Direccion;
+    private int Rol;
 
     public Usuario() {
     }
@@ -25,6 +23,14 @@ public class Usuario {
 
     public void setId(int Id) {
         this.Id = Id;
+    }
+
+    public String getRut() {
+        return Rut;
+    }
+
+    public void setRut(String Rut) {
+        this.Rut = Rut;
     }
 
     public String getNombre() {
@@ -41,14 +47,6 @@ public class Usuario {
 
     public void setApellido(String Apellido) {
         this.Apellido = Apellido;
-    }
-
-    public String getRut() {
-        return Rut;
-    }
-
-    public void setRut(String Rut) {
-        this.Rut = Rut;
     }
 
     public String getCorreo() {
@@ -68,29 +66,14 @@ public class Usuario {
     }
 
     public int getRol() {
-        return rol;
+        return Rol;
     }
 
-    public void setRol(int rol) {
-        this.rol = rol;
+    public void setRol(int Rol) {
+        this.Rol = Rol;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getDireccion() {
-        return Direccion;
-    }
-
-    public void setDireccion(String Direccion) {
-        this.Direccion = Direccion;
-    }
-
+    
     
    
    //Verificador para Validar LOGIN

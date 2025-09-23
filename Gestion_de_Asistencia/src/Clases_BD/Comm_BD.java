@@ -52,20 +52,17 @@ public class Comm_BD {
     return usuarioEncontrado; // si es null, no existe
     }
     
-    public void DAO_crearUsuario(Usuario U, Date FechaIngreso) {
-        String Sql = "Insert into usuarios (rut, nombre, apellido, correo, password, id_rol, id_area_trabajo, activo, fecha_ingreso, telefono, direccion, fecha_creacion, fecha_modificacion) VALUES (?,?, ?, ?, ?, ?, null, ?, ?, ?, ?, Current_TimeStamp, null)";
+    public void DAO_crearUsuario(Usuario U) {
+        String Sql = "Insert into usuario (rut, nombre, apellido, correo, contrasena, id_rol) Values (?,?,?,?,?,?,?);";
                                            
         try (PreparedStatement ps = Con.prepareStatement(Sql);) {
             ps.setString(1, U.getRut());
             ps.setString(2, U.getNombre());
             ps.setString(3, U.getApellido());
             ps.setString(4, U.getCorreo());
-            ps.setString(5, U.getContrasena());
-            ps.setInt(6, U.getRol());
-            ps.setBoolean(7, true);
-            ps.setDate(8, FechaIngreso);
-            ps.setString(9, U.getTelefono());
-            ps.setString(10, U.getDireccion()); 
+            ps.setString(5,U.getContrasena());
+            ps.setInt(6,U.getRol());
+            
             
             ps.executeUpdate();
         

@@ -9,7 +9,6 @@ package gestion_de_asistencia;
  * @author dolan
  */
 public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
-
     /**
      * Creates new form Interfaz_ModificarUsuarios
      */
