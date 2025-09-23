@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 //Clase para Conectar el Programa con la BBDD
 
 public class Conn_BD {
-    public static String URL = "jdbc:mysql://localhost:3306/controlasistenciadb", Usuario= "root", Clave = "";
+    public static String URL = "jdbc:mysql://localhost:3306/controlasistencia", Usuario= "root", Clave = "";
     
     public static Connection getConnection(){
         Connection Con = null;

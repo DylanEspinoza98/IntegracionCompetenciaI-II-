@@ -4,16 +4,26 @@
  */
 package gestion_de_asistencia;
 
+import Clases.Usuario;
+import Clases_BD.Comm_BD;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author dolan
  */
 public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
+    private JFrame Interfaz_Asistencia;
+    
+    private Comm_BD Bd;
     /**
      * Creates new form Interfaz_ModificarUsuarios
      */
-    public Interfaz_ModificarUsuarios() {
+    public Interfaz_ModificarUsuarios(JFrame Anterior) {
         initComponents();
+        this.Interfaz_Asistencia = Anterior;
+        Bd = new Comm_BD();
     }
 
     /**
@@ -27,8 +37,12 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
         Crear_Usuario = new javax.swing.JToggleButton();
+        btn_Eliminar = new javax.swing.JButton();
+        btn_Modificar = new javax.swing.JButton();
+        btn_Regresar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Crear_Usuario.setText("Crear Nuevo Usuario");
         Crear_Usuario.addActionListener(new java.awt.event.ActionListener() {
@@ -37,23 +51,66 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
             }
         });
 
+        btn_Eliminar.setText("Eliminar Usuario");
+
+        btn_Modificar.setText("Modificar Usuario");
+        btn_Modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ModificarActionPerformed(evt);
+            }
+        });
+
+        btn_Regresar.setText("Regresar");
+        btn_Regresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_RegresarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel1.setText("Modificar Usuarios");
+
         jDesktopPane1.setLayer(Crear_Usuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_Eliminar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_Modificar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_Regresar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(Crear_Usuario)
-                .addContainerGap(518, Short.MAX_VALUE))
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Crear_Usuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_Modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_Eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(btn_Regresar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(17, 17, 17)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(36, 36, 36)
+                .addComponent(jLabel1)
+                .addGap(52, 52, 52)
                 .addComponent(Crear_Usuario)
-                .addContainerGap(343, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_Modificar)
+                .addGap(18, 18, 18)
+                .addComponent(btn_Eliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                .addComponent(btn_Regresar)
+                .addGap(28, 28, 28))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -64,7 +121,7 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -75,6 +132,36 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
         new Pestaña_CrearUsuario().setVisible(true);
     }//GEN-LAST:event_Crear_UsuarioActionPerformed
 
+    private void btn_RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RegresarActionPerformed
+        // TODO add your handling code here:
+        this.Interfaz_Asistencia.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_RegresarActionPerformed
+
+    private void btn_ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ModificarActionPerformed
+        // TODO add your handling code here:
+        Usuario U = new Usuario();
+        int opcion = JOptionPane.showConfirmDialog(
+        null,
+        "¿Desea modificar un usuario?",
+        "Confirmar",
+        JOptionPane.YES_NO_OPTION
+        );
+        if (opcion == JOptionPane.YES_OPTION) {
+            String rut = JOptionPane.showInputDialog(
+            null,
+            "Ingrese el RUT del usuario:",
+            "RUT del Trabajador",
+            JOptionPane.QUESTION_MESSAGE
+            );
+            if (rut != null && !rut.trim().isEmpty()) {
+                U = Bd.ExtraerUsuario(rut);
+                new Interfaz_Editar_Usuarios(U).setVisible(true);
+            }
+        }
+
+    }//GEN-LAST:event_btn_ModificarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -82,6 +169,10 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton Crear_Usuario;
+    private javax.swing.JButton btn_Eliminar;
+    private javax.swing.JButton btn_Modificar;
+    private javax.swing.JButton btn_Regresar;
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
