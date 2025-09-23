@@ -49,7 +49,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         RutUser = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jDesktopPane1.setBackground(new java.awt.Color(204, 204, 204));
         jDesktopPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -142,8 +142,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
                                             .addGap(122, 122, 122)
                                             .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(jLabel6)
-                                                .addComponent(VerificacionPass, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                                .addComponent(VerificacionPass, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                             .addContainerGap()))
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                         .addComponent(jLabel1)

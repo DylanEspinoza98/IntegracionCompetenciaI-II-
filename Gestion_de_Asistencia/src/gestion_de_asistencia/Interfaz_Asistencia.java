@@ -21,6 +21,8 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         U_Loggeado = U;
         JOptionPane.showMessageDialog(null, "Bienvenido " + U_Loggeado.getNombre());
         Admin_Name.setText(U_Loggeado.getNombre());
+        
+        
     }
 
     /**
@@ -49,7 +51,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btn_CerrarSesion = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jDesktopPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -130,34 +132,33 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                 .addComponent(btn_EditarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70))
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                         .addGap(150, 150, 150)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_CerrarSesion))
-                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                            .addGap(53, 53, 53)
-                            .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel7)
                                 .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                                    .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(EnviarAsistencia))
-                                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel7)
-                                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(329, 329, 329)))
-                                .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel6))
-                                    .addGap(39, 39, 39)
-                                    .addComponent(btn_IngresarContextoAusencia))))
-                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                            .addGap(27, 27, 27)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jLabel3)
+                                    .addGap(329, 329, 329)))
+                            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel6))
+                                .addGap(39, 39, 39)
+                                .addComponent(btn_IngresarContextoAusencia))
+                            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(EnviarAsistencia))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 31, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
@@ -178,18 +179,18 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(13, 13, 13)
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EnviarAsistencia))
-                        .addGap(18, 18, 18)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EnviarAsistencia))
+                .addGap(18, 18, 18)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6))
-                    .addComponent(btn_IngresarContextoAusencia))
+                    .addComponent(btn_IngresarContextoAusencia, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(87, 87, 87)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_GenerarReporte)
@@ -222,7 +223,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         
         //Se Verifica que el Usuario conectado sea Administrador
         if(U_Loggeado.getRol() == 1){
-            new Interfaz_ModificarUsuarios().setVisible(true);
+            new Interfaz_ModificarUsuarios(this).setVisible(true);
             this.setVisible(false);
         } else {
             //Caso de ser Supervisor se le notificara

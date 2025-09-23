@@ -84,17 +84,15 @@
                   </Group>
               </Group>
               <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="tf_CorreoProfesional" min="-2" pref="187" max="-2" attributes="0"/>
+                      <Component id="pf_Contrasena" alignment="1" min="-2" pref="187" max="-2" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="115" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="tf_CorreoProfesional" min="-2" pref="187" max="-2" attributes="0"/>
-                              <Component id="pf_Contrasena" alignment="1" min="-2" pref="187" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jDateChooser1" min="-2" max="-2" attributes="0"/>
+                              <Component id="btn_inicioSesion" min="-2" max="-2" attributes="0"/>
                           </Group>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="33" pref="162" max="32767" attributes="0"/>
-                          <Component id="btn_inicioSesion" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -121,7 +119,9 @@
                   <Component id="pf_Contrasena" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btn_inicioSesion" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="51" max="32767" attributes="0"/>
+                  <EmptySpace pref="58" max="32767" attributes="0"/>
+                  <Component id="jDateChooser1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -176,6 +176,8 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_inicioSesionActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
         </Component>
       </SubComponents>
     </Container>
