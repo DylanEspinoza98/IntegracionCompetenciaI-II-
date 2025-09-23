@@ -7,10 +7,12 @@ package Clases;
  */
 public class Usuario {
     private int Id;
+    private String Rut;
     private String Nombre;
+    private String Apellido;
     private String Correo;
     private String Contrasena;
-    private int rol;
+    private int Rol;
 
     public Usuario() {
     }
@@ -23,12 +25,28 @@ public class Usuario {
         this.Id = Id;
     }
 
+    public String getRut() {
+        return Rut;
+    }
+
+    public void setRut(String Rut) {
+        this.Rut = Rut;
+    }
+
     public String getNombre() {
         return Nombre;
     }
 
     public void setNombre(String Nombre) {
         this.Nombre = Nombre;
+    }
+
+    public String getApellido() {
+        return Apellido;
+    }
+
+    public void setApellido(String Apellido) {
+        this.Apellido = Apellido;
     }
 
     public String getCorreo() {
@@ -48,13 +66,17 @@ public class Usuario {
     }
 
     public int getRol() {
-        return rol;
+        return Rol;
     }
 
-    public void setRol(int rol) {
-        this.rol = rol;
+    public void setRol(int Rol) {
+        this.Rol = Rol;
     }
 
+    
+    
+   
+   //Verificador para Validar LOGIN
     
     public boolean validarLogin(String correo, String contrasena) {
         return this.Correo.equals(correo) && this.Contrasena.equals(contrasena);

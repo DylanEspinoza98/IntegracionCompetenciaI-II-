@@ -5,22 +5,22 @@
 package gestion_de_asistencia;
 
 import Clases.Usuario;
-import java.util.HashSet;import java.util.Set;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author dolan
  */
 public class Interfaz_Asistencia extends javax.swing.JFrame {
-
+    Usuario U_Loggeado;
     /**
      * Creates new form Interfaz_Asistencia
+     * @param U
      */
     public Interfaz_Asistencia(Usuario U) {
         initComponents();
-        JOptionPane.showMessageDialog(null, "Bienvenido " + U.getNombre());
-        Admin_Name.setText(U.getNombre().toString());
+        U_Loggeado = U;
+        JOptionPane.showMessageDialog(null, "Bienvenido " + U_Loggeado.getNombre());
+        Admin_Name.setText(U_Loggeado.getNombre());
     }
 
     /**
@@ -37,7 +37,6 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         EnviarAsistencia = new javax.swing.JButton();
         btn_GenerarReporte = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         btn_EditarUsuario = new javax.swing.JButton();
@@ -48,7 +47,6 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        Observacion = new javax.swing.JTextField();
         btn_CerrarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -60,8 +58,6 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         btn_GenerarReporte.setText("Generar Reporte");
 
         jLabel3.setText("Rut Trabajador");
-
-        jLabel4.setText("Observacion");
 
         jLabel5.setFont(new java.awt.Font("Stencil", 1, 24)); // NOI18N
         jLabel5.setText("Gestion de Asistencia");
@@ -101,7 +97,6 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         jDesktopPane1.setLayer(EnviarAsistencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(btn_GenerarReporte, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jSeparator1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(btn_EditarUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -112,7 +107,6 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(Observacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(btn_CerrarSesion, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
@@ -149,16 +143,12 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                                 .addGroup(jDesktopPane1Layout.createSequentialGroup()
                                     .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(Observacion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(32, 32, 32)
                                     .addComponent(EnviarAsistencia))
                                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel7)
                                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                                         .addComponent(jLabel3)
-                                        .addGap(89, 89, 89)
-                                        .addComponent(jLabel4)
-                                        .addGap(174, 174, 174)))
+                                        .addGap(329, 329, 329)))
                                 .addGroup(jDesktopPane1Layout.createSequentialGroup()
                                     .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel2)
@@ -186,15 +176,12 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                 .addGap(1, 1, 1)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addComponent(jLabel3)
                 .addGap(13, 13, 13)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                         .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Observacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(EnviarAsistencia))
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -232,8 +219,16 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
 
     private void btn_EditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EditarUsuarioActionPerformed
         // TODO add your handling code here:
-        new Interfaz_ModificarUsuarios().setVisible(true);
-        this.setVisible(false);
+        
+        //Se Verifica que el Usuario conectado sea Administrador
+        if(U_Loggeado.getRol() == 1){
+            new Interfaz_ModificarUsuarios().setVisible(true);
+            this.setVisible(false);
+        } else {
+            //Caso de ser Supervisor se le notificara
+            JOptionPane.showMessageDialog(null, U_Loggeado.getNombre() + " No Tienes Acceso a estas Opciones");
+        }
+        
 
     }//GEN-LAST:event_btn_EditarUsuarioActionPerformed
 
@@ -250,7 +245,6 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Admin_Name;
     private javax.swing.JButton EnviarAsistencia;
-    private javax.swing.JTextField Observacion;
     private javax.swing.JTextField Rut_User;
     private javax.swing.JButton btn_CerrarSesion;
     private javax.swing.JButton btn_EditarUsuario;
@@ -260,7 +254,6 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
