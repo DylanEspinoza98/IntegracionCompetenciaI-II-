@@ -15,13 +15,14 @@ import javax.swing.JOptionPane;
  */
 public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
     private JFrame Interfaz_Asistencia;
-    
+    String Seguro;
     private Comm_BD Bd;
     /**
      * Creates new form Interfaz_ModificarUsuarios
      */
-    public Interfaz_ModificarUsuarios(JFrame Anterior) {
+    public Interfaz_ModificarUsuarios(JFrame Anterior, String Contrasena) {
         initComponents();
+        Seguro = Contrasena;
         this.Interfaz_Asistencia = Anterior;
         Bd = new Comm_BD();
     }
@@ -52,6 +53,11 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
         });
 
         btn_Eliminar.setText("Eliminar Usuario");
+        btn_Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EliminarActionPerformed(evt);
+            }
+        });
 
         btn_Modificar.setText("Modificar Usuario");
         btn_Modificar.addActionListener(new java.awt.event.ActionListener() {
@@ -161,6 +167,39 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btn_ModificarActionPerformed
+
+    private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
+        // TODO add your handling code here:
+        int opcion = JOptionPane.showConfirmDialog(
+        null,
+        "¿Desea Eliminar un usuario?",
+        "Confirmar",
+        JOptionPane.YES_NO_OPTION
+        );
+        if (opcion == JOptionPane.YES_OPTION) {
+            String rut = JOptionPane.showInputDialog(
+            null,
+            "Ingrese el RUT del usuario a Eliminar:",
+            "RUT del Trabajador",
+            JOptionPane.QUESTION_MESSAGE
+            );
+            if (rut != null && !rut.trim().isEmpty()) {
+                
+                String Confirmar = JOptionPane.showInputDialog(
+                null,
+                "Ingrese su contraseña para confirmar:",
+                "Contraseña",
+                JOptionPane.QUESTION_MESSAGE
+                );
+                if(Confirmar.equals(Seguro)){
+                    Bd.DAO_EliminarUsuario(rut);
+                    JOptionPane.showMessageDialog(null, "Usuario Eliminado");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Contraseña Incorrecta");
+                }
+            };
+        }
+    }//GEN-LAST:event_btn_EliminarActionPerformed
 
     /**
      * @param args the command line arguments
