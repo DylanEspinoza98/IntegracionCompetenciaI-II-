@@ -22,7 +22,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         initComponents();
         U_Loggeado = U;
         Sesion_Usuario.setUsuario(U);
-    
+        configurarBotonesPorRol();
     // USAR SesionUsuario EN LUGAR DE U_Loggeado DIRECTAMENTE
     if (Sesion_Usuario.hayUsuarioLoggeado()) {
         JOptionPane.showMessageDialog(null, "Bienvenido " + Sesion_Usuario.getNombreUsuario());
@@ -30,7 +30,9 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
     } else {
         JOptionPane.showMessageDialog(null, "Bienvenido Usuario");
         Admin_Name.setText("Sin usuario");
+        
     }
+    
     }
 
 
@@ -332,6 +334,61 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         new Interfaz_RevisionLicencias(this, U_Loggeado.getContrasena(), U_Loggeado).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btn_IngresarRegistroLicenciaActionPerformed
+    private void configurarBotonesPorRol() {
+    // Obtener rol del usuario
+    int rolUsuario = U_Loggeado.getRol();
+    
+    // ROLES:
+    // 1 = ADMINISTRADOR (acceso total)
+    // 2 = SUPERVISOR (acceso parcial)
+    // 3 = TRABAJADOR (solo asistencia)
+    
+    switch (rolUsuario) {
+        case 1: // ADMINISTRADOR
+            // Habilitar todos los botones
+            btn_EnviarAsistencia.setEnabled(true);
+            btn_IngresarContextoAusencia.setEnabled(true);
+            btn_EditarUsuario.setEnabled(true);
+            btn_GenerarReporte.setEnabled(true);
+            btn_CerrarSesion.setEnabled(true);
+            btn_IngresarRegistroLicencia.setEnabled(true);
+            
+            Admin_Name.setText(U_Loggeado.getNombre() + " (Administrador)");
+            break;
+            
+        case 2: // SUPERVISOR  
+           
+            btn_EnviarAsistencia.setEnabled(true);
+            btn_IngresarContextoAusencia.setEnabled(true);
+            btn_EditarUsuario.setEnabled(false);//Solo el admin puede modificar usuarios
+            btn_GenerarReporte.setEnabled(true);
+            btn_CerrarSesion.setEnabled(true);
+            btn_IngresarRegistroLicencia.setEnabled(true);
+            
+            btn_EditarUsuario.setVisible(false);
+            
+            Admin_Name.setText(U_Loggeado.getNombre() + " (Supervisor)");
+            break;
+            
+        case 3: // TRABAJADOR (Aun en consideracion si se utilizara
+        default:
+            
+            btn_EnviarAsistencia.setEnabled(true);
+            btn_IngresarContextoAusencia.setEnabled(false);
+            btn_EditarUsuario.setEnabled(false);
+            btn_GenerarReporte.setEnabled(false);
+            btn_CerrarSesion.setEnabled(true);
+            btn_IngresarRegistroLicencia.setEnabled(false);
+            
+            btn_IngresarContextoAusencia.setVisible(false);
+            btn_EditarUsuario.setVisible(false);
+            btn_GenerarReporte.setVisible(false);
+            btn_IngresarRegistroLicencia.setVisible(false);
+            
+            Admin_Name.setText(U_Loggeado.getNombre() + " (Trabajador)");
+            break;
+    }
+}
 
     /**
      * @param args the command line arguments
