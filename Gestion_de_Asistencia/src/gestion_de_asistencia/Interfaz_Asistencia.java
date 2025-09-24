@@ -228,7 +228,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         
         //Se Verifica que el Usuario conectado sea Administrador
         if(U_Loggeado.getRol() == 1){
-            new Interfaz_ModificarUsuarios().setVisible(true);
+            new Interfaz_ModificarUsuarios(this,U_Loggeado.getContrasena()).setVisible(true);
             this.setVisible(false);
         } else {
             //Caso de ser Supervisor se le notificara
