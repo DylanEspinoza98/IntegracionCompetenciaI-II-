@@ -65,17 +65,17 @@ public class Usuario {
         this.Contrasena = Contrasena;
     }
 
+    private int idrol;
+    
     public int getRol() {
-        return Rol;
+    return idrol;
     }
 
-    public void setRol(int Rol) {
-        this.Rol = Rol;
+    public void setRol(int idrol) {
+    this.idrol = idrol;
     }
-
     
     
-   
    //Verificador para Validar LOGIN
     
     public boolean validarLogin(String correo, String contrasena) {
