@@ -1,11 +1,16 @@
 package Clases_BD;
 import Clases.Usuario;
-
+import static Clases_BD.Conn_BD.getConnection;
 //Import para Sql
 import java.sql.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-
+import java.util.List;
+import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
 /**
  *
  * @author dolan
@@ -264,6 +269,131 @@ public class Comm_BD {
             "Error al registrar licencia para RUT: " + rut, ex);
         return false;
     }
+}
+        // Obtener todas las solicitudes pendientes
+    public List<Licencia> obtenerSolicitudesPendientes() {
+    List<Licencia> solicitudes = new ArrayList<>();
+    Connection Con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    
+    try {
+        Con = getConnection();
+        if (Con != null) {
+            String sql = "SELECT * FROM Licencia WHERE estado = 'PENDING' ORDER BY id_licencia DESC";
+            pst = Con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                Licencia licencia = new Licencia();
+                licencia.setId_licencia(rs.getInt("id_licencia"));
+                licencia.setRut(rs.getString("rut"));
+                licencia.setFecha_inicio(rs.getDate("fecha_inicio"));
+                licencia.setFecha_fin(rs.getDate("fecha_fin"));
+                licencia.setMotivo(rs.getString("motivo"));
+                licencia.setEstado(rs.getString("estado"));
+                
+                solicitudes.add(licencia);
+            }
+            
+            System.out.println("Se encontraron " + solicitudes.size() + " solicitudes pendientes");
+        }
+        
+    } catch (SQLException e) {
+        System.out.println("Error al obtener solicitudes pendientes: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (Con != null) Con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        }
+    }
+    
+    return solicitudes;
+}
+    public boolean actualizarEstadoLicencia(int id, String estado) {
+    Connection Con = null;
+    PreparedStatement pst = null;
+    boolean resultado = false;
+    
+    try {
+        Con = getConnection();
+        if (Con != null) {
+            String sql = "UPDATE Licencia SET estado = ? WHERE id_licencia = ?";
+            pst = Con.prepareStatement(sql);
+            pst.setString(1, estado);
+            pst.setInt(2, id);
+            
+            int filasAfectadas = pst.executeUpdate();
+            
+            if (filasAfectadas > 0) {
+                resultado = true;
+                System.out.println("Estado de licencia actualizado exitosamente. ID: " + id + ", Nuevo estado: " + estado);
+            } else {
+                System.out.println("No se pudo actualizar la licencia con ID: " + id);
+            }
+        }
+        
+    } catch (SQLException e) {
+        System.out.println("Error al actualizar estado de licencia: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (pst != null) pst.close();
+            if (Con != null) Con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        }
+    }
+    
+    return resultado;
+}
+    public Licencia obtenerLicenciaPorId(int id) {
+    Licencia licencia = null;
+    Connection Con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    
+    try {
+        Con = getConnection();
+        if (Con != null) {
+            String sql = "SELECT * FROM Licencia WHERE id_licencia = ?";
+            pst = Con.prepareStatement(sql);
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                licencia = new Licencia();
+                licencia.setId_licencia(rs.getInt("id_licencia"));
+                licencia.setRut(rs.getString("rut"));
+                licencia.setFecha_inicio(rs.getDate("fecha_inicio"));
+                licencia.setFecha_fin(rs.getDate("fecha_fin"));
+                licencia.setMotivo(rs.getString("motivo"));
+                licencia.setEstado(rs.getString("estado"));
+                
+                System.out.println("Licencia encontrada con ID: " + id);
+            } else {
+                System.out.println("No se encontró licencia con ID: " + id);
+            }
+        }
+        
+    } catch (SQLException e) {
+        System.out.println("Error al obtener licencia por ID: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (Con != null) Con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        }
+    }
+    
+    return licencia;
 }
 }
     
