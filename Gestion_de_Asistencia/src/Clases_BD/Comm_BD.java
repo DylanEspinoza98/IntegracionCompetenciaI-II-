@@ -1,5 +1,6 @@
 package Clases_BD;
 import Clases.Usuario;
+import Clases.Licencia;
 import static Clases_BD.Conn_BD.getConnection;
 //Import para Sql
 import java.sql.*;
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
+
 /**
  *
  * @author dolan
@@ -270,7 +272,7 @@ public class Comm_BD {
         return false;
     }
 }
-        // Obtener todas las solicitudes pendientes
+    // Obtener todas las solicitudes pendientes
     public List<Licencia> obtenerSolicitudesPendientes() {
     List<Licencia> solicitudes = new ArrayList<>();
     Connection Con = null;
@@ -391,10 +393,55 @@ public class Comm_BD {
         } catch (SQLException e) {
             System.out.println("Error al cerrar conexiones: " + e.getMessage());
         }
+        
     }
     
+    
     return licencia;
+    
 }
+    //Obtener rol del usuario
+    public int obtenerRolUsuario(String rut) {
+    int rol = 3; // Por defecto trabajador
+    Connection Con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    
+    try {
+        Con = getConnection();
+        if (Con != null) {
+            String sql = "SELECT idrol FROM Usuario WHERE rut = ?";
+            pst = Con.prepareStatement(sql);
+            pst.setString(1, rut);
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                rol = rs.getInt("idrol");
+                System.out.println("Rol encontrado para RUT " + rut + ": " + rol);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al obtener rol: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (Con != null) Con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        }
+    }
+    
+    return rol;
+}
+
+
+
+
+
+
+
 }
     
     
