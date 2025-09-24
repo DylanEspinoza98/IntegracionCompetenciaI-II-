@@ -6,6 +6,7 @@ package gestion_de_asistencia;
 
 import Clases.Usuario;
 import javax.swing.JOptionPane;
+import Clases_BD.Comm_BD;
 /**
  *
  * @author dolan
@@ -21,8 +22,6 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         U_Loggeado = U;
         JOptionPane.showMessageDialog(null, "Bienvenido " + U_Loggeado.getNombre());
         Admin_Name.setText(U_Loggeado.getNombre());
-        
-        
     }
 
     /**
@@ -36,7 +35,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
         Rut_User = new javax.swing.JTextField();
-        EnviarAsistencia = new javax.swing.JButton();
+        btn_EnviarAsistencia = new javax.swing.JButton();
         btn_GenerarReporte = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -51,11 +50,16 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btn_CerrarSesion = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jDesktopPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        EnviarAsistencia.setText("Ingresar Asistencia");
+        btn_EnviarAsistencia.setText("Ingresar Asistencia");
+        btn_EnviarAsistencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EnviarAsistenciaActionPerformed(evt);
+            }
+        });
 
         btn_GenerarReporte.setText("Generar Reporte");
 
@@ -96,7 +100,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         });
 
         jDesktopPane1.setLayer(Rut_User, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(EnviarAsistencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_EnviarAsistencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(btn_GenerarReporte, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jSeparator1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -132,33 +136,34 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                 .addComponent(btn_EditarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70))
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                         .addGap(150, 150, 150)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_CerrarSesion))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel7)
+                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                            .addGap(53, 53, 53)
+                            .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addGap(329, 329, 329)))
-                            .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel6))
-                                .addGap(39, 39, 39)
-                                .addComponent(btn_IngresarContextoAusencia))
-                            .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                                .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(EnviarAsistencia))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btn_EnviarAsistencia))
+                                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel7)
+                                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(329, 329, 329)))
+                                .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel6))
+                                    .addGap(39, 39, 39)
+                                    .addComponent(btn_IngresarContextoAusencia))))
+                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                            .addGap(27, 27, 27)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 31, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
@@ -179,18 +184,18 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(13, 13, 13)
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EnviarAsistencia))
-                .addGap(18, 18, 18)
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_EnviarAsistencia))
+                        .addGap(18, 18, 18)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6))
-                    .addComponent(btn_IngresarContextoAusencia, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(btn_IngresarContextoAusencia))
                 .addGap(87, 87, 87)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_GenerarReporte)
@@ -223,7 +228,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         
         //Se Verifica que el Usuario conectado sea Administrador
         if(U_Loggeado.getRol() == 1){
-            new Interfaz_ModificarUsuarios(this).setVisible(true);
+            new Interfaz_ModificarUsuarios().setVisible(true);
             this.setVisible(false);
         } else {
             //Caso de ser Supervisor se le notificara
@@ -239,16 +244,62 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_CerrarSesionActionPerformed
 
+    private void btn_EnviarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EnviarAsistenciaActionPerformed
+        String rut = Rut_User.getText().trim();
+
+    // Validar que se ingrese un RUT
+    if (rut.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor ingrese un RUT", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Verificar que el RUT exista en la base de datos
+    Comm_BD bd = new Comm_BD();
+    if (!bd.verificarRutExiste(rut)) {
+        JOptionPane.showMessageDialog(this, "El RUT ingresado no existe en el sistema", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Obtener nombre del usuario
+    String nombreUsuario = bd.obtenerNombreUsuario(rut);
+
+    // Verificar si ya registró entrada hoy
+    if (!bd.verificarEntradaHoy(rut)) {
+        // Registrar entrada
+        if (bd.registrarEntradaAsistencia(rut)) {
+            JOptionPane.showMessageDialog(this, 
+                "Entrada registrada exitosamente para: " + nombreUsuario + "\n" +
+                "Hora: " + new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date()),
+                "Registro de Entrada", 
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al registrar la entrada", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        // Verificar si ya registró salida
+        if (!bd.verificarSalidaHoy(rut)) {
+            // Registrar salida
+            if (bd.registrarSalidaAsistencia(rut)) {
+                JOptionPane.showMessageDialog(this, 
+                    "Salida registrada exitosamente para: " + nombreUsuario + "\n" +
+                    "Hora: " + new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date()),
+                    "Registro de Salida", 
+                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+        }
+    }
+    }//GEN-LAST:event_btn_EnviarAsistenciaActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Admin_Name;
-    private javax.swing.JButton EnviarAsistencia;
     private javax.swing.JTextField Rut_User;
     private javax.swing.JButton btn_CerrarSesion;
     private javax.swing.JButton btn_EditarUsuario;
+    private javax.swing.JButton btn_EnviarAsistencia;
     private javax.swing.JButton btn_GenerarReporte;
     private javax.swing.JButton btn_IngresarContextoAusencia;
     private javax.swing.JDesktopPane jDesktopPane1;
