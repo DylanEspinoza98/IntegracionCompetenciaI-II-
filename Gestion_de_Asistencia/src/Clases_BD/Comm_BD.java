@@ -1,10 +1,19 @@
 package Clases_BD;
+import Clases.Asistencia;
 import Clases.Usuario;
-
+import Clases.Licencia;
+import static Clases_BD.Conn_BD.getConnection;
 //Import para Sql
 import java.sql.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.List;
+import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.time.LocalDate;
 
 /**
  *
@@ -103,35 +112,36 @@ public class Comm_BD {
 }
 
     //  Extraer usuario por su rut para su modificacion
-    public Usuario ExtraerUsuario(String Rut){
-        Usuario usuarioEncontrado = null;
+    public Usuario ExtraerUsuario(String rut) {
+    Usuario usuarioEncontrado = null;
+    
+    try {
+        String sql = "SELECT u.id_usuario AS Id, u.rut AS Rut, u.nombre AS Nombre, u.apellido AS Apellido, " +
+                     "u.correo AS Correo, u.contrasena AS Contrasena, u.id_rol AS Rol " +
+                     "FROM usuario u WHERE u.rut = ?";
         
-        try {
-            Statement st = Con.createStatement();
-            ResultSet rs = st.executeQuery(
-                    "SELECT u.id_usuario AS Id,u.rut as Rut , u.nombre AS Nombre , u.apellido as Apellido ,u.correo AS Correo, " +
-                            "u.contrasena AS Contrasena, u.id_rol AS Rol FROM usuario u"
-            );
-            while (rs.next()) {
-                Usuario u = new Usuario();
-                u.setId(rs.getInt("Id"));
-                u.setRut(rs.getString("Rut"));
-                u.setApellido(rs.getString("Apellido"));
-                u.setNombre(rs.getString("Nombre"));
-                u.setCorreo(rs.getString("Correo"));
-                u.setContrasena(rs.getString("Contrasena"));
-                u.setRol(rs.getInt("Rol"));
-                
-                if (u.getRut().equals(Rut)) {
-                    usuarioEncontrado = u; // lo guardamos
-                    break; // dejamos de buscar
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, null, ex);
+        PreparedStatement ps = Con.prepareStatement(sql);
+        ps.setString(1, rut);
+        
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            usuarioEncontrado = new Usuario();
+            usuarioEncontrado.setId(rs.getInt("Id"));
+            usuarioEncontrado.setRut(rs.getString("Rut"));
+            usuarioEncontrado.setApellido(rs.getString("Apellido"));
+            usuarioEncontrado.setNombre(rs.getString("Nombre"));
+            usuarioEncontrado.setCorreo(rs.getString("Correo"));
+            usuarioEncontrado.setContrasena(rs.getString("Contrasena"));
+            usuarioEncontrado.setRol(rs.getInt("Rol"));
         }
-        return usuarioEncontrado; // si es null, no existe
+        
+    } catch (SQLException ex) {
+        Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, null, ex);
     }
+    
+    return usuarioEncontrado; // null si no existe
+}
+
     
      //Registro entrada de asistencia
     public boolean registrarEntradaAsistencia(String rut) {
@@ -265,6 +275,208 @@ public class Comm_BD {
         return false;
     }
 }
+    // Obtener todas las solicitudes pendientes
+    public List<Licencia> obtenerSolicitudesPendientes() {
+    List<Licencia> solicitudes = new ArrayList<>();
+    Connection Con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    
+    try {
+        Con = getConnection();
+        if (Con != null) {
+            String sql = "SELECT * FROM Licencia WHERE estado = 'PENDING' ORDER BY id_licencia DESC";
+            pst = Con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                Licencia licencia = new Licencia();
+                licencia.setId_licencia(rs.getInt("id_licencia"));
+                licencia.setRut(rs.getString("rut"));
+                licencia.setFecha_inicio(rs.getDate("fecha_inicio"));
+                licencia.setFecha_fin(rs.getDate("fecha_fin"));
+                licencia.setMotivo(rs.getString("motivo"));
+                licencia.setEstado(rs.getString("estado"));
+                
+                solicitudes.add(licencia);
+            }
+            
+            System.out.println("Se encontraron " + solicitudes.size() + " solicitudes pendientes");
+        }
+        
+    } catch (SQLException e) {
+        System.out.println("Error al obtener solicitudes pendientes: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (Con != null) Con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        }
+    }
+    
+    return solicitudes;
+}
+    public boolean actualizarEstadoLicencia(int id, String estado) {
+    Connection Con = null;
+    PreparedStatement pst = null;
+    boolean resultado = false;
+    
+    try {
+        Con = getConnection();
+        if (Con != null) {
+            String sql = "UPDATE Licencia SET estado = ? WHERE id_licencia = ?";
+            pst = Con.prepareStatement(sql);
+            pst.setString(1, estado);
+            pst.setInt(2, id);
+            
+            int filasAfectadas = pst.executeUpdate();
+            
+            if (filasAfectadas > 0) {
+                resultado = true;
+                System.out.println("Estado de licencia actualizado exitosamente. ID: " + id + ", Nuevo estado: " + estado);
+            } else {
+                System.out.println("No se pudo actualizar la licencia con ID: " + id);
+            }
+        }
+        
+    } catch (SQLException e) {
+        System.out.println("Error al actualizar estado de licencia: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (pst != null) pst.close();
+            if (Con != null) Con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        }
+    }
+    
+    return resultado;
+}
+    public Licencia obtenerLicenciaPorId(int id) {
+    Licencia licencia = null;
+    Connection Con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    
+    try {
+        Con = getConnection();
+        if (Con != null) {
+            String sql = "SELECT * FROM Licencia WHERE id_licencia = ?";
+            pst = Con.prepareStatement(sql);
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                licencia = new Licencia();
+                licencia.setId_licencia(rs.getInt("id_licencia"));
+                licencia.setRut(rs.getString("rut"));
+                licencia.setFecha_inicio(rs.getDate("fecha_inicio"));
+                licencia.setFecha_fin(rs.getDate("fecha_fin"));
+                licencia.setMotivo(rs.getString("motivo"));
+                licencia.setEstado(rs.getString("estado"));
+                
+                System.out.println("Licencia encontrada con ID: " + id);
+            } else {
+                System.out.println("No se encontró licencia con ID: " + id);
+            }
+        }
+        
+    } catch (SQLException e) {
+        System.out.println("Error al obtener licencia por ID: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (Con != null) Con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        }
+        
+    }
+    
+    
+    return licencia;
+    
+}
+    //Obtener rol del usuario
+    public int obtenerRolUsuario(String rut) {
+    int rol = 3; // Por defecto trabajador
+    Connection Con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    
+    try {
+        Con = getConnection();
+        if (Con != null) {
+            String sql = "SELECT idrol FROM Usuario WHERE rut = ?";
+            pst = Con.prepareStatement(sql);
+            pst.setString(1, rut);
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                rol = rs.getInt("idrol");
+                System.out.println("Rol encontrado para RUT " + rut + ": " + rol);
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al obtener rol: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (Con != null) Con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        }
+    }
+    
+    return rol;
+}
+
+   public List<Asistencia> obtenerAsistenciasPorMes(String rut, int mes, int anio) throws SQLException {
+    List<Asistencia> listaAsistencias = new ArrayList<>();
+    
+
+    LocalDate primerDia = LocalDate.of(anio, mes, 1);
+    LocalDate ultimoDia = primerDia.withDayOfMonth(primerDia.lengthOfMonth());
+
+    String sql = "SELECT id_asistencia, rut, h_entrada, h_salida, fecha_actual, id_tipo_asistencia, justificacion " +
+                 "FROM Asistencia " +
+                 "WHERE rut = ? AND fecha_actual BETWEEN ? AND ? " +
+                 "ORDER BY fecha_actual";
+
+    try (PreparedStatement ps = Con.prepareStatement(sql)) {
+        ps.setString(1, rut);
+        ps.setDate(2, Date.valueOf(primerDia));
+        ps.setDate(3, Date.valueOf(ultimoDia));
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Asistencia a = new Asistencia ();
+            
+            a.setId_tipo_asistencia(rs.getInt("id_asistencia"));
+            a.setRut(rs.getString("rut"));
+            a.setH_entrada(rs.getTime("h_entrada"));
+            a.setH_salida(rs.getTime("h_salida"));
+            a.setFecha_actual(rs.getDate("fecha_actual"));
+            a.setId_tipo_asistencia(rs.getInt("id_tipo_asistencia"));
+            a.setJustificacion(rs.getString("justificacion"));
+            
+            listaAsistencias.add(a);
+        }
+        return listaAsistencias;
+    } catch (SQLException e) {
+        System.out.println("Error al cerrar conexiones: " + e.getMessage());
+    }
+        return listaAsistencias = null;
+   }
 }
     
     

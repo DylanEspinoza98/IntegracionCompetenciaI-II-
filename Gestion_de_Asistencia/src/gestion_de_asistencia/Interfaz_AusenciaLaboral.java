@@ -1,6 +1,7 @@
 package gestion_de_asistencia;
 
 import Clases.Licencia;
+import Clases.Usuario;
 import javax.swing.JOptionPane;
 import com.toedter.calendar.JDateChooser;
 import java.util.Date;
@@ -10,24 +11,46 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
-
+import javax.swing.JFrame;
+import Clases.Sesion_Usuario;
 /**
  *
  * @author dolan
  */
 public class Interfaz_AusenciaLaboral extends javax.swing.JFrame {
 
+    String Seguro;
     private Comm_BD bd;
-
+    private Usuario U_Loggeado;
     /**
      * Creates new form Interfaz_AusenciaLaboral
      */
-    public Interfaz_AusenciaLaboral() {
-        initComponents();
-        initComponentesPersonalizados();
-        bd = new Comm_BD();
-        setLocationRelativeTo(null);
+    public Interfaz_AusenciaLaboral(JFrame Anterior, String Contrasena, Usuario usuario) {
+    initComponents();
+    initComponentesPersonalizados();
+    bd = new Comm_BD();
+    Seguro = Contrasena;
+    this.U_Loggeado = usuario;  
+    if (usuario != null) {
+        Sesion_Usuario.setUsuario(usuario);
     }
+    setLocationRelativeTo(null);
+}
+    public Interfaz_AusenciaLaboral() {
+    initComponents();
+    initComponentesPersonalizados();
+    bd = new Comm_BD();
+    Seguro = "";
+    
+    // Crear usuario directamente
+    U_Loggeado = new Usuario();
+    U_Loggeado.setNombre("Usuario Testing");
+    U_Loggeado.setApellido("Prueba");
+    
+    setLocationRelativeTo(null);
+}
+
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,6 +91,7 @@ public class Interfaz_AusenciaLaboral extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     private void initComponentesPersonalizados(){
         
+        
     jDesktopPane1 = new javax.swing.JDesktopPane();
     jDesktopPane1.setBackground(new java.awt.Color(245, 245, 245));
     
@@ -77,11 +101,8 @@ public class Interfaz_AusenciaLaboral extends javax.swing.JFrame {
     getContentPane().add(jDesktopPane1, java.awt.BorderLayout.CENTER);
     
     // ============= CONTINUAR CON LA LÓGICA ORIGINAL =============
-    crearComponentesAdicionales();
-    configurarComponentesAdicionales();
-    agregarEventosComponentes();
-    configurarLayoutPersonalizado(); // Ahora jDesktopPane1 existe
-    configurarVentana();
+    
+    
 
         // Crear los componentes adicionales
         crearComponentesAdicionales();
@@ -207,18 +228,21 @@ public class Interfaz_AusenciaLaboral extends javax.swing.JFrame {
     
     private void agregarEventosComponentes() {
         btn_BuscarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_BuscarEmpleadoActionPerformed(evt);
             }
         });
         
         btn_RegistrarAusencia.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_RegistrarAusenciaActionPerformed(evt);
             }
         });
         
         btn_Volver.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_VolverActionPerformed(evt);
             }
@@ -387,10 +411,21 @@ public class Interfaz_AusenciaLaboral extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
-
-    private void btn_VolverActionPerformed(java.awt.event.ActionEvent evt) {
-        this.dispose();
+    
+   private void btn_VolverActionPerformed(java.awt.event.ActionEvent evt) {
+    this.dispose();
+    
+    // USAR SesionUsuario
+    if (Sesion_Usuario.hayUsuarioLoggeado()) {
+        new Interfaz_Asistencia(Sesion_Usuario.getUsuario()).setVisible(true);
+    } else {
+        Usuario usuarioTemp = new Usuario();
+        usuarioTemp.setNombre("Usuario Temp");
+        new Interfaz_Asistencia(usuarioTemp).setVisible(true);
     }
+}
+
+
     
     // ============= MÉTODO AUXILIAR =============
     
@@ -423,6 +458,7 @@ public class Interfaz_AusenciaLaboral extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Interfaz_AusenciaLaboral().setVisible(true);
             }
