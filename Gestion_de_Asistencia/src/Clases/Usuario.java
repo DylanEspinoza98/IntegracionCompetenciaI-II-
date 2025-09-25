@@ -1,4 +1,3 @@
-
 package Clases;
 
 /**
@@ -12,11 +11,38 @@ public class Usuario {
     private String Apellido;
     private String Correo;
     private String Contrasena;
-    private int Rol;
+    private int idrol;           // Mantengo el nombre original
+    private int id_areatrabajo;  // NUEVO CAMPO AGREGADO
 
+    // Constructor vacío
     public Usuario() {
     }
+    
+    // Constructor completo (NUEVO)
+    public Usuario(String rut, String nombre, String apellido, String correo, 
+                   String contrasena, int idrol, int id_areatrabajo) {
+        this.Rut = rut;
+        this.Nombre = nombre;
+        this.Apellido = apellido;
+        this.Correo = correo;
+        this.Contrasena = contrasena;
+        this.idrol = idrol;
+        this.id_areatrabajo = id_areatrabajo;
+    }
+    
+    // Constructor sin área (para compatibilidad)
+    public Usuario(String rut, String nombre, String apellido, String correo, 
+                   String contrasena, int idrol) {
+        this.Rut = rut;
+        this.Nombre = nombre;
+        this.Apellido = apellido;
+        this.Correo = correo;
+        this.Contrasena = contrasena;
+        this.idrol = idrol;
+        this.id_areatrabajo = 0; // Sin área asignada por defecto
+    }
 
+    // Getters y Setters existentes
     public int getId() {
         return Id;
     }
@@ -65,20 +91,45 @@ public class Usuario {
         this.Contrasena = Contrasena;
     }
 
-    private int idrol;
-    
+    // Rol - mantener compatibilidad con código existente
     public int getRol() {
-    return idrol;
+        return idrol;
     }
 
     public void setRol(int idrol) {
-    this.idrol = idrol;
+        this.idrol = idrol;
     }
     
+    // NUEVOS MÉTODOS para área de trabajo
+    public int getId_areatrabajo() {
+        return id_areatrabajo;
+    }
+
+    public void setId_areatrabajo(int id_areatrabajo) {
+        this.id_areatrabajo = id_areatrabajo;
+    }
     
-   //Verificador para Validar LOGIN
+    // Método para obtener nombre completo
+    public String getNombreCompleto() {
+        return this.Nombre + " " + this.Apellido;
+    }
     
+    // Verificador para Validar LOGIN (existente)
     public boolean validarLogin(String correo, String contrasena) {
         return this.Correo.equals(correo) && this.Contrasena.equals(contrasena);
+    }
+    
+    // Método toString para debugging
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "Id=" + Id +
+                ", Rut='" + Rut + '\'' +
+                ", Nombre='" + Nombre + '\'' +
+                ", Apellido='" + Apellido + '\'' +
+                ", Correo='" + Correo + '\'' +
+                ", Rol=" + idrol +
+                ", AreaTrabajo=" + id_areatrabajo +
+                '}';
     }
 }
