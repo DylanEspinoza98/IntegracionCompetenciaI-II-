@@ -1,0 +1,257 @@
+CREATE DATABASE IF NOT EXISTS ControlAsistencia;
+USE ControlAsistencia;
+
+CREATE TABLE Rol (
+  id_rol INT PRIMARY KEY,
+  nombre VARCHAR(50),
+  descripcion TEXT,
+  login_permission BOOLEAN
+);
+
+CREATE TABLE AreaTrabajo (
+  id_areatrabajo INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100),
+  descripcion TEXT,
+  activo BOOLEAN
+);
+
+CREATE TABLE Usuario (
+  id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+  rut VARCHAR(12) NOT NULL UNIQUE,
+  nombre VARCHAR(50),
+  apellido VARCHAR(50),
+  correo VARCHAR(100),
+  contrasena VARCHAR(255),
+  activo BOOLEAN,
+  id_rol INT,
+  id_areatrabajo INT,
+  FOREIGN KEY (id_rol) REFERENCES Rol(id_rol),
+  FOREIGN KEY (id_areatrabajo) REFERENCES AreaTrabajo(id_areatrabajo)
+);
+
+
+CREATE TABLE TipoAsistencia (
+  id_tipo_asistencia INT PRIMARY KEY,
+  nombre VARCHAR(50),
+  descripcion TEXT
+);
+
+
+CREATE TABLE Asistencia (
+  id_asistencia INT AUTO_INCREMENT PRIMARY KEY,
+  rut VARCHAR(12),
+  h_entrada TIME,
+  h_salida TIME,
+  fecha_actual DATE,
+  id_tipo_asistencia INT,
+  justificacion TEXT,
+  FOREIGN KEY (rut) REFERENCES Usuario(rut),
+  FOREIGN KEY (id_tipo_asistencia) REFERENCES TipoAsistencia(id_tipo_asistencia)
+);
+
+
+
+CREATE TABLE HoraLaboral (
+  id_horalaboral INT AUTO_INCREMENT PRIMARY KEY,
+  rut VARCHAR(12),
+  h_entrada TIME,
+  h_salida TIME,
+  calendario VARCHAR(20),
+  id_areatrabajo INT,
+  FOREIGN KEY (rut) REFERENCES Usuario(rut),
+  FOREIGN KEY (id_areatrabajo) REFERENCES AreaTrabajo(id_areatrabajo)
+);
+
+
+CREATE TABLE Licencia (
+  id_licencia INT AUTO_INCREMENT PRIMARY KEY,
+  rut VARCHAR(12),
+  fecha_inicio DATE,
+  fecha_fin DATE,
+  motivo TEXT,
+  estado ENUM('PENDING','APPROVED','REJECTED'),
+  denegar_motivo TEXT,
+  FOREIGN KEY (rut) REFERENCES Usuario(rut)
+);
+
+
+
+USE ControlAsistencia;
+
+-- Insert sample data into Rol
+INSERT INTO Rol (id_rol, nombre, descripcion, login_permission) VALUES
+(1, 'Administrador', 'Acceso total al sistema', TRUE),
+(2, 'Trabajador', 'Acceso limitado para registrar asistencia y licencias', TRUE),
+(3, 'Supervisor', 'Acceso para aprobar licencias y generar reportes', TRUE);
+
+-- Insert sample data into AreaTrabajo
+INSERT INTO AreaTrabajo (nombre, descripcion, activo) VALUES
+('Oficina Central', 'Oficina principal de la empresa', TRUE),
+('Planta Producción', 'Área de producción', TRUE);
+
+-- Insert sample data into Usuario
+INSERT INTO Usuario (rut, nombre, apellido, correo, contrasena, id_rol, activo, id_areatrabajo) VALUES
+('12345678-9', 'Juan', 'Pérez', 'juan.perez@ejemplo.com', 'pwd123', 2, 1, 2),
+('98765432-1', 'María', 'Gómez', 'maria.gomez@ejemplo.com', 'pwd456', 3, 1, 2),
+('55555555-5', 'Admin', 'Root', 'admin@ejemplo.com', 'adminpwd', 1, 1, 1);
+
+-- Insert sample data into TipoAsistencia
+INSERT INTO TipoAsistencia (id_tipo_asistencia, nombre, descripcion) VALUES
+(1, 'PRESENTE', 'Asistencia normal'),
+(2, 'AUSENTE', 'Sin asistencia'),
+(3, 'LICENCIA', 'Permiso autorizado'),
+(4, 'RETRASO', 'Llegada tardía'),
+(5, 'SALIDA ANTICIPADA', 'Salida antes de horario');
+
+-- Insert sample data into Asistencia
+INSERT INTO Asistencia (rut, h_entrada, h_salida, fecha_actual, id_tipo_asistencia, justificacion) VALUES
+('12345678-9', '08:00:00', '17:00:00', '2025-09-22', 1, NULL),
+('98765432-1', '09:15:00', '17:00:00', '2025-09-22', 4, 'Transporte demorado');
+
+
+-- Insert sample data into HoraLaboral
+INSERT INTO HoraLaboral (rut, h_entrada, h_salida, calendario, id_areatrabajo) VALUES
+('12345678-9', '08:00:00', '17:00:00', 'LUN-VIE', 1),
+('98765432-1', '09:00:00', '18:00:00', 'LUN-VIE', 2);
+
+-- Insert sample data into Licencia
+INSERT INTO Licencia (rut, fecha_inicio, fecha_fin, motivo, estado) VALUES
+('12345678-9', '2025-10-01', '2025-10-05', 'Vacaciones', 'PENDING'),
+('98765432-1', '2025-09-25', '2025-09-26', 'Cita médica', 'APPROVED');
+
+-- Vista para el registro de usuarios
+CREATE VIEW vista_registro_usuarios AS
+SELECT 
+    u.id_usuario,
+    u.rut,
+    u.nombre,
+    u.apellido,
+    u.correo,
+    u.activo,
+    r.nombre AS rol,
+    r.descripcion AS descripcion_rol,
+    r.login_permission AS puede_iniciar_sesion
+FROM Usuario u
+INNER JOIN Rol r ON u.id_rol = r.id_rol
+ORDER BY u.nombre, u.apellido;
+
+-- Vista para el registro de licencias
+CREATE VIEW vista_registro_licencias AS
+SELECT 
+    l.id_licencia,
+    l.rut,
+    CONCAT(u.nombre, ' ', u.apellido) AS nombre_completo,
+    l.fecha_inicio,
+    l.fecha_fin,
+    DATEDIFF(l.fecha_fin, l.fecha_inicio) + 1 AS dias_licencia,
+    l.motivo,
+    l.estado,
+    CASE 
+        WHEN l.estado = 'PENDING' THEN 'Pendiente'
+        WHEN l.estado = 'APPROVED' THEN 'Aprobada'
+        WHEN l.estado = 'REJECTED' THEN 'Rechazada'
+    END AS estado_descripcion,
+    u.correo
+FROM Licencia l
+INNER JOIN Usuario u ON l.rut = u.rut
+ORDER BY l.fecha_inicio DESC;
+
+-- Vista para el registro de asistencia
+CREATE VIEW vista_registro_asistencia AS
+SELECT 
+    a.id_asistencia,
+    a.rut,
+    CONCAT(u.nombre, ' ', u.apellido) AS nombre_completo,
+    a.fecha_actual,
+    a.h_entrada,
+    a.h_salida,
+    CASE 
+        WHEN a.h_entrada IS NOT NULL AND a.h_salida IS NOT NULL 
+        THEN TIMEDIFF(a.h_salida, a.h_entrada)
+        ELSE NULL
+    END AS horas_trabajadas,
+    ta.nombre AS tipo_asistencia,
+    ta.descripcion AS descripcion_tipo,
+    a.justificacion,
+    hl.h_entrada AS hora_entrada_programada,
+    hl.h_salida AS hora_salida_programada,
+    CASE 
+        WHEN a.h_entrada > hl.h_entrada THEN 'RETRASO'
+        WHEN a.h_salida < hl.h_salida THEN 'SALIDA ANTICIPADA'
+        WHEN ta.nombre = 'PRESENTE' THEN 'PUNTUAL'
+        ELSE ta.nombre
+    END AS estado_asistencia,
+    at.nombre AS area_trabajo
+FROM Asistencia a
+INNER JOIN Usuario u ON a.rut = u.rut
+INNER JOIN TipoAsistencia ta ON a.id_tipo_asistencia = ta.id_tipo_asistencia
+LEFT JOIN HoraLaboral hl ON a.rut = hl.rut
+LEFT JOIN AreaTrabajo at ON hl.id_areatrabajo = at.id_areatrabajo
+ORDER BY a.fecha_actual DESC, a.h_entrada DESC;
+
+-- Vista de resumen de asistencia mensual por empleado
+CREATE OR REPLACE VIEW vista_resumen_asistencia_mensual AS
+SELECT 
+    u.rut,
+    CONCAT(u.nombre, ' ', u.apellido) AS nombre_completo,
+    YEAR(a.fecha_actual) AS anio,
+    MONTH(a.fecha_actual) AS mes,
+    DATE_FORMAT(MIN(a.fecha_actual), '%Y-%m') AS periodo,
+    COUNT(*) AS dias_registrados,
+    SUM(CASE WHEN ta.nombre = 'PRESENTE' THEN 1 ELSE 0 END) AS dias_presente,
+    SUM(CASE WHEN ta.nombre = 'AUSENTE' THEN 1 ELSE 0 END) AS dias_ausente,
+    SUM(CASE WHEN ta.nombre = 'LICENCIA' THEN 1 ELSE 0 END) AS dias_licencia,
+    SUM(CASE WHEN ta.nombre = 'RETRASO' THEN 1 ELSE 0 END) AS dias_retraso,
+    ROUND(AVG(CASE 
+        WHEN a.h_entrada IS NOT NULL AND a.h_salida IS NOT NULL 
+        THEN TIME_TO_SEC(TIMEDIFF(a.h_salida, a.h_entrada))/3600
+        ELSE NULL
+    END), 2) AS promedio_horas_diarias
+FROM Asistencia a
+INNER JOIN Usuario u ON a.rut = u.rut
+INNER JOIN TipoAsistencia ta ON a.id_tipo_asistencia = ta.id_tipo_asistencia
+GROUP BY u.rut, u.nombre, u.apellido, YEAR(a.fecha_actual), MONTH(a.fecha_actual)
+ORDER BY anio DESC, mes DESC, nombre_completo;
+
+-- Vista de licencias activas y próximas
+CREATE VIEW vista_licencias_activas AS
+SELECT 
+    l.id_licencia,
+    l.rut,
+    CONCAT(u.nombre, ' ', u.apellido) AS nombre_completo,
+    l.fecha_inicio,
+    l.fecha_fin,
+    DATEDIFF(l.fecha_fin, l.fecha_inicio) + 1 AS dias_licencia,
+    l.motivo,
+    l.estado,
+    u.correo,
+    CASE 
+        WHEN CURDATE() BETWEEN l.fecha_inicio AND l.fecha_fin THEN 'EN CURSO'
+        WHEN l.fecha_inicio > CURDATE() THEN 'PRÓXIMA'
+        ELSE 'FINALIZADA'
+    END AS estado_temporal,
+    CASE 
+        WHEN CURDATE() < l.fecha_inicio THEN DATEDIFF(l.fecha_inicio, CURDATE())
+        WHEN CURDATE() BETWEEN l.fecha_inicio AND l.fecha_fin THEN DATEDIFF(l.fecha_fin, CURDATE())
+        ELSE 0
+    END AS dias_restantes
+FROM Licencia l
+INNER JOIN Usuario u ON l.rut = u.rut
+WHERE l.estado = 'APPROVED' AND l.fecha_fin >= CURDATE()
+ORDER BY l.fecha_inicio;
+
+-- Consultar todos los usuarios activos
+SELECT * FROM vista_registro_usuarios WHERE activo = 1;
+
+-- Consultar licencias pendientes de aprobación
+SELECT * FROM vista_registro_licencias WHERE estado = 'PENDING';
+
+-- Consultar asistencia de un empleado específico
+SELECT * FROM vista_registro_asistencia WHERE rut = '12345678-9';
+
+-- Consultar resumen de asistencia del mes actual
+SELECT * FROM vista_resumen_asistencia_mensual
+WHERE anio = YEAR(CURDATE()) AND mes = MONTH(CURDATE());;
+
+-- Consultar licencias activas
+SELECT * FROM vista_licencias_activas WHERE estado_temporal IN ('EN CURSO', 'PRÓXIMA');
