@@ -5,6 +5,7 @@ import Clases.Usuario;
 import Clases_BD.Comm_BD;
 import javax.swing.*;
 import Clases.AreaTrabajo;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
@@ -12,14 +13,26 @@ import java.util.List;
  */
 public class Pestaña_CrearUsuario extends javax.swing.JFrame {
     Comm_BD Bd;
+    List<AreaTrabajo> Area = new ArrayList<>();
     /**
      * Creates new form Pestaña_CrearUsuario
      */
     public Pestaña_CrearUsuario() {
-        initComponents();
-        Bd = new Comm_BD();
-        
+    initComponents();
+    Bd = new Comm_BD();
+    
+    Area = Bd.obtenerAreasActivas();
+    if (Area == null) {
+        Area = new ArrayList<>();
     }
+    
+    for (AreaTrabajo area : Area) {
+        if (area != null && area.getNombre() != null) {
+            Cb_Area.addItem(area.getNombre());
+        }
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,26 +65,32 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
         Cb_Area = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jDesktopPane1.setBackground(new java.awt.Color(204, 204, 204));
         jDesktopPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Ingrese los Datos del Nuevo Empleado");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nombre");
 
         jLabel3.setText("Apellido");
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Correo");
 
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Contraseña");
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Reingrese Contraseña");
 
         jSeparator1.setForeground(new java.awt.Color(102, 102, 102));
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Rol del Nuevo Trabajador");
 
         Cb_Rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trabajador", "Administrador", "Supervisor" }));
@@ -85,6 +104,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
             }
         });
 
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Rut");
 
         Cb_Area.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +113,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Area de Trabajo del Nuevo Trabajador");
 
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -137,18 +158,24 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
                         .addGroup(jDesktopPane1Layout.createSequentialGroup()
                             .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createSequentialGroup()
-                                    .addGap(17, 17, 17)
-                                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(PasswordUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
-                                            .addGap(122, 122, 122)
+                                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createSequentialGroup()
+                                            .addGap(17, 17, 17)
                                             .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel6)
-                                                .addComponent(VerificacionPass, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel8))))))
+                                                .addComponent(PasswordUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                                    .addComponent(jLabel5)
+                                                    .addGap(122, 122, 122)
+                                                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel6)
+                                                        .addComponent(VerificacionPass, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                                    .addComponent(jLabel8)
+                                                    .addGap(49, 49, 49)
+                                                    .addComponent(Cb_Area, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addGap(27, 27, 27)))
                             .addContainerGap()))
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -174,10 +201,6 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
                         .addGap(142, 142, 142)
                         .addComponent(Agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(Cb_Area, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(87, 87, 87))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,10 +239,10 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PasswordUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(VerificacionPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addGap(4, 4, 4)
-                .addComponent(Cb_Area, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Cb_Area, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addGap(23, 23, 23)
                 .addComponent(Agregar)
                 .addContainerGap(111, Short.MAX_VALUE))
@@ -229,15 +252,11 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -355,30 +374,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_AgregarActionPerformed
 
     private void Cb_AreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cb_AreaActionPerformed
-         try {
-        // Limpiar el ComboBox
-        Cb_Area.removeAllItems();
-        
-        
-        
-        // Obtener áreas de la base de datos
-        Comm_BD bd = new Comm_BD();
-        List<AreaTrabajo> areas = bd.obtenerAreasActivas();
-        
-        // Llenar el ComboBox
-        for (AreaTrabajo area : areas) {
-        Cb_Area.addItem(area);
-}
 
-        
-        System.out.println("ComboBox de áreas cargado con " + areas.size() + " elementos");
-        
-    } catch (Exception e) {
-        System.err.println("Error al cargar áreas: " + e.getMessage());
-        e.printStackTrace();
-        
-        
-    }
     }//GEN-LAST:event_Cb_AreaActionPerformed
     private int obtenerIdAreaSeleccionada() {
     Object selectedItem = Cb_Area.getSelectedItem();

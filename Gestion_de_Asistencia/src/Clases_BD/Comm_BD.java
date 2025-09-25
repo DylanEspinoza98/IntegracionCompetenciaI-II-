@@ -1,6 +1,7 @@
 package Clases_BD;
 import Clases.Usuario;
 import Clases.AreaTrabajo;
+import Clases.Asistencia;
 import Clases.Licencia;
 import static Clases_BD.Conn_BD.getConnection;
 //Import para Sql
@@ -13,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
+import java.time.LocalDate;
 
 /**
  *
@@ -583,12 +585,49 @@ public AreaTrabajo obtenerAreaPorId(int id) {
     return area;
 }
 
+public List<Asistencia> obtenerAsistenciasPorMes(String rut, int mes, int anio) throws SQLException {
+    List<Asistencia> listaAsistencias = new ArrayList<>();
+    
 
+    LocalDate primerDia = LocalDate.of(anio, mes, 1);
+    LocalDate ultimoDia = primerDia.withDayOfMonth(primerDia.lengthOfMonth());
 
+    String sql = "SELECT id_asistencia, rut, h_entrada, h_salida, fecha_actual, id_tipo_asistencia, justificacion " +
+                 "FROM Asistencia " +
+                 "WHERE rut = ? AND fecha_actual BETWEEN ? AND ? " +
+                 "ORDER BY fecha_actual";
 
+    try (PreparedStatement ps = Con.prepareStatement(sql)) {
+        ps.setString(1, rut);
+        ps.setDate(2, Date.valueOf(primerDia));
+        ps.setDate(3, Date.valueOf(ultimoDia));
 
+        ResultSet rs = ps.executeQuery();
 
-
+        while (rs.next()) {
+            Asistencia a = new Asistencia ();
+            
+            a.setId_tipo_asistencia(rs.getInt("id_asistencia"));
+            a.setRut(rs.getString("rut"));
+            a.setH_entrada(rs.getTime("h_entrada"));
+            a.setH_salida(rs.getTime("h_salida"));
+            a.setFecha_actual(rs.getDate("fecha_actual"));
+            a.setId_tipo_asistencia(rs.getInt("id_tipo_asistencia"));
+            a.setJustificacion(rs.getString("justificacion"));
+            
+            listaAsistencias.add(a);
+        }
+        return listaAsistencias;
+    } catch (SQLException e) {
+        System.out.println("Error al cerrar conexiones: " + e.getMessage());
+    }
+        return listaAsistencias = null;
+   }
 }
+
+
+
+
+
     
     

@@ -74,6 +74,7 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
         });
 
         jLabel1.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Modificar Usuarios");
 
         jDesktopPane1.setLayer(Crear_Usuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -162,7 +163,11 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
             );
             if (rut != null && !rut.trim().isEmpty()) {
                 U = Bd.ExtraerUsuario(rut);
-                new Interfaz_Editar_Usuarios(U).setVisible(true);
+                if(U != null){
+                    new Interfaz_Editar_Usuarios(U).setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Usuario no encontrado o Rut mal ingresado");
+                }
             }
         }
 
@@ -170,6 +175,7 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
         // TODO add your handling code here:
+        Usuario U = new Usuario();
         int opcion = JOptionPane.showConfirmDialog(
         null,
         "¿Desea Eliminar un usuario?",
@@ -184,18 +190,22 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE
             );
             if (rut != null && !rut.trim().isEmpty()) {
-                
+                U = Bd.ExtraerUsuario(rut);
                 String Confirmar = JOptionPane.showInputDialog(
                 null,
                 "Ingrese su contraseña para confirmar:",
                 "Contraseña",
                 JOptionPane.QUESTION_MESSAGE
                 );
-                if(Confirmar.equals(Seguro)){
+                if (U.getRut().equals(rut)){
+                    if(Confirmar.equals(Seguro)){
                     Bd.DAO_EliminarUsuario(rut);
                     JOptionPane.showMessageDialog(null, "Usuario Eliminado");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Contraseña Incorrecta");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Contraseña Incorrecta");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Usuario no encontrado o Rut mal ingresado");
                 }
             };
         }

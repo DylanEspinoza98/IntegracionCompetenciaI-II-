@@ -4,16 +4,22 @@
  */
 package gestion_de_asistencia;
 
+import Clases.Asistencia;
 import Clases.Usuario;
 import Clases.Sesion_Usuario;
 import javax.swing.JOptionPane;
 import Clases_BD.Comm_BD;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.JFrame;
+import java.sql.Time;
 /**
  *
  * @author Nicolas
  */
 public class Interfaz_Asistencia extends javax.swing.JFrame {
     Usuario U_Loggeado;
+    Comm_BD Bd;
     /**
      * Creates new form Interfaz_Asistencia
      * @param U
@@ -21,6 +27,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
     public Interfaz_Asistencia(Usuario U) {
         initComponents();
         U_Loggeado = U;
+        Bd = new Comm_BD();
         Sesion_Usuario.setUsuario(U);
         configurarBotonesPorRol();
     // USAR SesionUsuario EN LUGAR DE U_Loggeado DIRECTAMENTE
@@ -70,10 +77,17 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         });
 
         btn_GenerarReporte.setText("Generar Reporte");
+        btn_GenerarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_GenerarReporteActionPerformed(evt);
+            }
+        });
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Rut Trabajador");
 
         jLabel5.setFont(new java.awt.Font("Stencil", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Gestion de Asistencia");
 
         btn_EditarUsuario.setText("Crear/Modificar Usuarios");
@@ -90,14 +104,19 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Bienvenido ");
 
+        Admin_Name.setForeground(new java.awt.Color(255, 255, 255));
         Admin_Name.setText("Usuario xd");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("En caso que desee ingresar un permiso, ");
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Vacaciones o Licencias Medicas de un Usuario Ingrese Aqui:");
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Ingrese el Rut del Usuario para Registrar la Asistencia");
 
         btn_CerrarSesion.setText("Cerrar Sesion");
@@ -107,8 +126,10 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("En caso que desee revisar las solicitudes de licencia, ");
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Ingrese Aqui:");
 
         btn_IngresarRegistroLicencia.setText("Acá");
@@ -341,6 +362,52 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         new Interfaz_RevisionLicencias(this, U_Loggeado.getContrasena(), U_Loggeado).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btn_IngresarRegistroLicenciaActionPerformed
+
+    private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
+        // TODO add your handling code here:
+        String rut = JOptionPane.showInputDialog("Ingrese el RUT del trabajador:");
+        if (rut == null || rut.isEmpty()) return;
+
+        // Pedir mes
+        String mesStr = JOptionPane.showInputDialog("Ingrese el mes (1-12):");
+        if (mesStr == null || mesStr.isEmpty()) return;
+        int mes = Integer.parseInt(mesStr);
+
+        // Pedir año
+        String anioStr = JOptionPane.showInputDialog("Ingrese el año:");
+        if (anioStr == null || anioStr.isEmpty()) return;
+        int anio = Integer.parseInt(anioStr);
+
+        // Validar que no sea mayor al actual
+        LocalDate hoy = LocalDate.now();
+        if (anio > hoy.getYear() || (anio == hoy.getYear() && mes > hoy.getMonthValue())) {
+            JOptionPane.showMessageDialog(null, "El mes y año no pueden ser mayores al actual.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Si pasa la validación, ejecutar tu método que obtiene la lista
+        try {
+            List<Asistencia> lista = Bd.obtenerAsistenciasPorMes(rut, mes, anio);
+            Usuario U = Bd.ExtraerUsuario(rut);
+            Time inicioJornada = Time.valueOf("09:00:00");
+            Time finJornada = Time.valueOf("18:00:00");
+
+            // Mostrar la tabla en un JPanel o JFrame
+            ReporteAsistencia panel = new ReporteAsistencia(U,lista,inicioJornada , finJornada);
+            JFrame frame = new JFrame("Asistencia Mensual");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(600, 400);
+            frame.add(panel);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener la asistencia: " + e.getMessage());
+        }
+        
+    }//GEN-LAST:event_btn_GenerarReporteActionPerformed
+    
     private void configurarBotonesPorRol() {
     // Obtener rol del usuario
     int rolUsuario = U_Loggeado.getRol();
