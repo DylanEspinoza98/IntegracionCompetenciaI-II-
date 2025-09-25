@@ -1,4 +1,3 @@
-
 package Clases;
 
 /**
@@ -7,24 +6,57 @@ package Clases;
  */
 public class Usuario {
     private int Id;
+    private String Rut;
     private String Nombre;
     private String Apellido;
-    private String Rut;
     private String Correo;
     private String Contrasena;
-    private int rol;
-    private String telefono;
-    private String Direccion;
+    private int idrol;           // Mantengo el nombre original
+    private int id_areatrabajo;  // NUEVO CAMPO AGREGADO
 
+    // Constructor vacío
     public Usuario() {
     }
+    
+    // Constructor completo (NUEVO)
+    public Usuario(String rut, String nombre, String apellido, String correo, 
+                   String contrasena, int idrol, int id_areatrabajo) {
+        this.Rut = rut;
+        this.Nombre = nombre;
+        this.Apellido = apellido;
+        this.Correo = correo;
+        this.Contrasena = contrasena;
+        this.idrol = idrol;
+        this.id_areatrabajo = id_areatrabajo;
+    }
+    
+    // Constructor sin área (para compatibilidad)
+    public Usuario(String rut, String nombre, String apellido, String correo, 
+                   String contrasena, int idrol) {
+        this.Rut = rut;
+        this.Nombre = nombre;
+        this.Apellido = apellido;
+        this.Correo = correo;
+        this.Contrasena = contrasena;
+        this.idrol = idrol;
+        this.id_areatrabajo = 0; // Sin área asignada por defecto
+    }
 
+    // Getters y Setters existentes
     public int getId() {
         return Id;
     }
 
     public void setId(int Id) {
         this.Id = Id;
+    }
+
+    public String getRut() {
+        return Rut;
+    }
+
+    public void setRut(String Rut) {
+        this.Rut = Rut;
     }
 
     public String getNombre() {
@@ -43,14 +75,6 @@ public class Usuario {
         this.Apellido = Apellido;
     }
 
-    public String getRut() {
-        return Rut;
-    }
-
-    public void setRut(String Rut) {
-        this.Rut = Rut;
-    }
-
     public String getCorreo() {
         return Correo;
     }
@@ -67,35 +91,45 @@ public class Usuario {
         this.Contrasena = Contrasena;
     }
 
+    // Rol - mantener compatibilidad con código existente
     public int getRol() {
-        return rol;
+        return idrol;
     }
 
-    public void setRol(int rol) {
-        this.rol = rol;
+    public void setRol(int idrol) {
+        this.idrol = idrol;
     }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getDireccion() {
-        return Direccion;
-    }
-
-    public void setDireccion(String Direccion) {
-        this.Direccion = Direccion;
-    }
-
     
-   
-   //Verificador para Validar LOGIN
+    // NUEVOS MÉTODOS para área de trabajo
+    public int getId_areatrabajo() {
+        return id_areatrabajo;
+    }
+
+    public void setId_areatrabajo(int id_areatrabajo) {
+        this.id_areatrabajo = id_areatrabajo;
+    }
     
+    // Método para obtener nombre completo
+    public String getNombreCompleto() {
+        return this.Nombre + " " + this.Apellido;
+    }
+    
+    // Verificador para Validar LOGIN (existente)
     public boolean validarLogin(String correo, String contrasena) {
         return this.Correo.equals(correo) && this.Contrasena.equals(contrasena);
+    }
+    
+    // Método toString para debugging
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "Id=" + Id +
+                ", Rut='" + Rut + '\'' +
+                ", Nombre='" + Nombre + '\'' +
+                ", Apellido='" + Apellido + '\'' +
+                ", Correo='" + Correo + '\'' +
+                ", Rol=" + idrol +
+                ", AreaTrabajo=" + id_areatrabajo +
+                '}';
     }
 }

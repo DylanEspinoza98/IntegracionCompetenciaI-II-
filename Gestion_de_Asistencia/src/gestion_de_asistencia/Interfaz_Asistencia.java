@@ -4,14 +4,22 @@
  */
 package gestion_de_asistencia;
 
+import Clases.Asistencia;
 import Clases.Usuario;
+import Clases.Sesion_Usuario;
 import javax.swing.JOptionPane;
+import Clases_BD.Comm_BD;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.JFrame;
+import java.sql.Time;
 /**
  *
- * @author dolan
+ * @author Nicolas
  */
 public class Interfaz_Asistencia extends javax.swing.JFrame {
     Usuario U_Loggeado;
+    Comm_BD Bd;
     /**
      * Creates new form Interfaz_Asistencia
      * @param U
@@ -19,9 +27,14 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
     public Interfaz_Asistencia(Usuario U) {
         initComponents();
         U_Loggeado = U;
-        JOptionPane.showMessageDialog(null, "Bienvenido " + U_Loggeado.getNombre());
-        Admin_Name.setText(U_Loggeado.getNombre());
+        Bd = new Comm_BD();
+        Sesion_Usuario.setUsuario(U);
+        configurarBotonesPorRol();
+    // USAR SesionUsuario EN LUGAR DE U_Loggeado DIRECTAMENTE
+    
+    
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,10 +47,9 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
         Rut_User = new javax.swing.JTextField();
-        EnviarAsistencia = new javax.swing.JButton();
+        btn_EnviarAsistencia = new javax.swing.JButton();
         btn_GenerarReporte = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         btn_EditarUsuario = new javax.swing.JButton();
@@ -48,22 +60,34 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        Observacion = new javax.swing.JTextField();
         btn_CerrarSesion = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        btn_IngresarRegistroLicencia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jDesktopPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        EnviarAsistencia.setText("Ingresar Asistencia");
+        btn_EnviarAsistencia.setText("Ingresar Asistencia");
+        btn_EnviarAsistencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_EnviarAsistenciaActionPerformed(evt);
+            }
+        });
 
         btn_GenerarReporte.setText("Generar Reporte");
+        btn_GenerarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_GenerarReporteActionPerformed(evt);
+            }
+        });
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Rut Trabajador");
 
-        jLabel4.setText("Observacion");
-
         jLabel5.setFont(new java.awt.Font("Stencil", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Gestion de Asistencia");
 
         btn_EditarUsuario.setText("Crear/Modificar Usuarios");
@@ -80,14 +104,19 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Bienvenido ");
 
+        Admin_Name.setForeground(new java.awt.Color(255, 255, 255));
         Admin_Name.setText("Usuario xd");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("En caso que desee ingresar un permiso, ");
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Vacaciones o Licencias Medicas de un Usuario Ingrese Aqui:");
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Ingrese el Rut del Usuario para Registrar la Asistencia");
 
         btn_CerrarSesion.setText("Cerrar Sesion");
@@ -97,11 +126,23 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("En caso que desee revisar las solicitudes de licencia, ");
+
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Ingrese Aqui:");
+
+        btn_IngresarRegistroLicencia.setText("Acá");
+        btn_IngresarRegistroLicencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_IngresarRegistroLicenciaActionPerformed(evt);
+            }
+        });
+
         jDesktopPane1.setLayer(Rut_User, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(EnviarAsistencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_EnviarAsistencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(btn_GenerarReporte, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jSeparator1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(btn_EditarUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -112,8 +153,10 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(Observacion, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(btn_CerrarSesion, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel8, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(btn_IngresarRegistroLicencia, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -149,20 +192,21 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                                 .addGroup(jDesktopPane1Layout.createSequentialGroup()
                                     .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(Observacion, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(32, 32, 32)
-                                    .addComponent(EnviarAsistencia))
+                                    .addComponent(btn_EnviarAsistencia))
                                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel7)
                                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                                         .addComponent(jLabel3)
-                                        .addGap(89, 89, 89)
-                                        .addComponent(jLabel4)
-                                        .addGap(174, 174, 174)))
+                                        .addGap(329, 329, 329)))
                                 .addGroup(jDesktopPane1Layout.createSequentialGroup()
                                     .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel2)
-                                        .addComponent(jLabel6))
+                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel4)
+                                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                                            .addComponent(jLabel8)
+                                            .addGap(41, 41, 41)
+                                            .addComponent(btn_IngresarRegistroLicencia)))
                                     .addGap(39, 39, 39)
                                     .addComponent(btn_IngresarContextoAusencia))))
                         .addGroup(jDesktopPane1Layout.createSequentialGroup()
@@ -186,16 +230,13 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                 .addGap(1, 1, 1)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
-                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addComponent(jLabel3)
                 .addGap(13, 13, 13)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                         .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Rut_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Observacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EnviarAsistencia))
+                            .addComponent(btn_EnviarAsistencia))
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -203,11 +244,17 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6))
                     .addComponent(btn_IngresarContextoAusencia))
-                .addGap(87, 87, 87)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(btn_IngresarRegistroLicencia))
+                .addGap(27, 27, 27)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_GenerarReporte)
                     .addComponent(btn_EditarUsuario))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -226,7 +273,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
 
     private void btn_IngresarContextoAusenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IngresarContextoAusenciaActionPerformed
         // TODO add your handling code here:
-        new Interfaz_AusenciaLaboral().setVisible(true);
+        new Interfaz_AusenciaLaboral(this, U_Loggeado.getContrasena(), U_Loggeado).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btn_IngresarContextoAusenciaActionPerformed
 
@@ -235,7 +282,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         
         //Se Verifica que el Usuario conectado sea Administrador
         if(U_Loggeado.getRol() == 1){
-            new Interfaz_ModificarUsuarios().setVisible(true);
+            new Interfaz_ModificarUsuarios(this,U_Loggeado.getContrasena()).setVisible(true);
             this.setVisible(false);
         } else {
             //Caso de ser Supervisor se le notificara
@@ -251,19 +298,185 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_CerrarSesionActionPerformed
 
+    private void btn_EnviarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EnviarAsistenciaActionPerformed
+        String rut = Rut_User.getText().trim();
+    
+    // Validar que se ingrese un RUT
+    if (rut.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor ingrese un RUT", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // Verificar que el RUT exista en la base de datos
+    Comm_BD bd = new Comm_BD();
+    if (!bd.verificarRutExiste(rut)) {
+        JOptionPane.showMessageDialog(this, "El RUT ingresado no existe en el sistema", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // Obtener nombre del usuario
+    String nombreUsuario = bd.obtenerNombreUsuario(rut);
+    
+    // NUEVA FUNCIONALIDAD: Verificar si ya completó su asistencia del día
+    if (bd.verificarAsistenciaCompleta(rut)) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ AVISO: " + nombreUsuario + " ya ha registrado su entrada y salida del día de hoy."+"\n" +
+            "La asistencia diaria está completa.",
+            "Asistencia Ya Registrada",
+            JOptionPane.WARNING_MESSAGE);
+        Rut_User.setText(""); // Limpiar campo
+        return;
+    }
+    
+    // Verificar si ya registró entrada hoy
+    if (!bd.verificarEntradaHoy(rut)) {
+        // Registrar entrada
+        if (bd.registrarEntradaAsistencia(rut)) {
+            JOptionPane.showMessageDialog(this, 
+                "✅ Entrada registrada exitosamente para: " + nombreUsuario + "\n" +
+                "Hora: " + new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date()),
+                "Registro de Entrada", 
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al registrar la entrada", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        // Verificar si ya registró salida
+        if (!bd.verificarSalidaHoy(rut)) {
+            // Registrar salida
+            if (bd.registrarSalidaAsistencia(rut)) {
+                JOptionPane.showMessageDialog(this, 
+                    "✅ Salida registrada exitosamente para: " + nombreUsuario + "\n" +
+                    "Hora: " + new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date()) + "\n" +
+                    "🎉 Asistencia del día completada.",
+                    "Registro de Salida", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al registrar la salida", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    }//GEN-LAST:event_btn_EnviarAsistenciaActionPerformed
+
+    private void btn_IngresarRegistroLicenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IngresarRegistroLicenciaActionPerformed
+        new Interfaz_RevisionLicencias(this, U_Loggeado.getContrasena(), U_Loggeado).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btn_IngresarRegistroLicenciaActionPerformed
+
+    private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
+        // TODO add your handling code here:
+        String rut = JOptionPane.showInputDialog("Ingrese el RUT del trabajador:");
+        if (rut == null || rut.isEmpty()) return;
+
+        // Pedir mes
+        String mesStr = JOptionPane.showInputDialog("Ingrese el mes (1-12):");
+        if (mesStr == null || mesStr.isEmpty()) return;
+        int mes = Integer.parseInt(mesStr);
+
+        // Pedir año
+        String anioStr = JOptionPane.showInputDialog("Ingrese el año:");
+        if (anioStr == null || anioStr.isEmpty()) return;
+        int anio = Integer.parseInt(anioStr);
+
+        // Validar que no sea mayor al actual
+        LocalDate hoy = LocalDate.now();
+        if (anio > hoy.getYear() || (anio == hoy.getYear() && mes > hoy.getMonthValue())) {
+            JOptionPane.showMessageDialog(null, "El mes y año no pueden ser mayores al actual.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Si pasa la validación, ejecutar tu método que obtiene la lista
+        try {
+            List<Asistencia> lista = Bd.obtenerAsistenciasPorMes(rut, mes, anio);
+            Usuario U = Bd.ExtraerUsuario(rut);
+            Time inicioJornada = Time.valueOf("09:00:00");
+            Time finJornada = Time.valueOf("18:00:00");
+
+            // Mostrar la tabla en un JPanel o JFrame
+            ReporteAsistencia panel = new ReporteAsistencia(U,lista,inicioJornada , finJornada);
+            JFrame frame = new JFrame("Asistencia Mensual");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(600, 400);
+            frame.add(panel);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener la asistencia: " + e.getMessage());
+        }
+        
+    }//GEN-LAST:event_btn_GenerarReporteActionPerformed
+    
+    private void configurarBotonesPorRol() {
+    // Obtener rol del usuario
+    int rolUsuario = U_Loggeado.getRol();
+    
+    // ROLES:
+    // 1 = ADMINISTRADOR (acceso total)
+    // 2 =  TRABAJADOR (solo asistencia)
+    // 3 = SUPERVISOR (acceso parcial)
+    
+    switch (rolUsuario) {
+        case 1: // ADMINISTRADOR
+            // Habilitar todos los botones
+            btn_EnviarAsistencia.setEnabled(true);
+            btn_IngresarContextoAusencia.setEnabled(true);
+            btn_EditarUsuario.setEnabled(true);
+            btn_GenerarReporte.setEnabled(true);
+            btn_CerrarSesion.setEnabled(true);
+            btn_IngresarRegistroLicencia.setEnabled(true);
+            
+            Admin_Name.setText(U_Loggeado.getNombre() + " (Administrador)");
+            break;
+            
+        case 2: // TRABAJADOR  
+           
+            btn_EnviarAsistencia.setEnabled(true);
+            btn_IngresarContextoAusencia.setEnabled(true);
+            btn_EditarUsuario.setEnabled(false);
+            btn_GenerarReporte.setEnabled(false);
+            btn_CerrarSesion.setEnabled(true);
+            btn_IngresarRegistroLicencia.setEnabled(false);
+            
+            btn_IngresarContextoAusencia.setVisible(false);
+            btn_EditarUsuario.setVisible(false);
+            btn_GenerarReporte.setVisible(false);
+            btn_IngresarRegistroLicencia.setVisible(false);
+            
+            Admin_Name.setText(U_Loggeado.getNombre() + " (Trabajador)");
+            break;
+            
+        case 3: // SUPERVISOR 
+        default:
+            
+            btn_EnviarAsistencia.setEnabled(true);
+            btn_IngresarContextoAusencia.setEnabled(true);
+            btn_EditarUsuario.setEnabled(false);
+            btn_GenerarReporte.setEnabled(true);
+            btn_CerrarSesion.setEnabled(true);
+            btn_IngresarRegistroLicencia.setEnabled(true);
+            
+            btn_EditarUsuario.setVisible(false);
+            
+            Admin_Name.setText(U_Loggeado.getNombre() + " (Supervisor)");
+            break;
+    }
+}
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Admin_Name;
-    private javax.swing.JButton EnviarAsistencia;
-    private javax.swing.JTextField Observacion;
     private javax.swing.JTextField Rut_User;
     private javax.swing.JButton btn_CerrarSesion;
     private javax.swing.JButton btn_EditarUsuario;
+    private javax.swing.JButton btn_EnviarAsistencia;
     private javax.swing.JButton btn_GenerarReporte;
     private javax.swing.JButton btn_IngresarContextoAusencia;
+    private javax.swing.JButton btn_IngresarRegistroLicencia;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -272,6 +485,7 @@ public class Interfaz_Asistencia extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
