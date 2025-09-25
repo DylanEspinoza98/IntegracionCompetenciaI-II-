@@ -191,20 +191,20 @@ public class Interfaz_ModificarUsuarios extends javax.swing.JFrame {
             );
             if (rut != null && !rut.trim().isEmpty()) {
                 U = Bd.ExtraerUsuario(rut);
-                String Confirmar = JOptionPane.showInputDialog(
-                null,
-                "Ingrese su contraseña para confirmar:",
-                "Contraseña",
-                JOptionPane.QUESTION_MESSAGE
-                );
                 if (U.getRut().equals(rut)){
+                    String Confirmar = JOptionPane.showInputDialog(
+                    null,
+                    "Ingrese su contraseña como administrador para confirmar:",
+                    "Contraseña",
+                    JOptionPane.QUESTION_MESSAGE
+                );
                     if(Confirmar.equals(Seguro)){
                     Bd.DAO_EliminarUsuario(rut);
                     JOptionPane.showMessageDialog(null, "Usuario Eliminado");
                     } else {
                         JOptionPane.showMessageDialog(null, "Contraseña Incorrecta");
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Usuario no encontrado o Rut mal ingresado");
                 }
             };
