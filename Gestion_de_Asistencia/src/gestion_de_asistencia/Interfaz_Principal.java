@@ -152,7 +152,7 @@ public class Interfaz_Principal extends javax.swing.JFrame {
         String Pass = new String(pf_Contrasena.getPassword());
         Usuario u = Bd.VerificacionUsuario(tf_CorreoProfesional.getText(), Pass);
         if (u != null) {
-            if(u.getRol() == 1 || u.getRol() == 2){
+            if(u.getRol() == 1 || u.getRol() == 2 || u.getRol() == 3){
                 new Interfaz_Asistencia(u).setVisible(true);
                 this.dispose();
             }

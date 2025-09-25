@@ -1,11 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package gestion_de_asistencia;
+
 import Clases.Usuario;
 import Clases_BD.Comm_BD;
 import javax.swing.*;
+import Clases.AreaTrabajo;
+import java.util.List;
 /**
  *
  * @author dolan
@@ -18,6 +18,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
     public Pestaña_CrearUsuario() {
         initComponents();
         Bd = new Comm_BD();
+        
     }
 
     /**
@@ -48,6 +49,8 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
         Agregar = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         RutUser = new javax.swing.JTextField();
+        Cb_Area = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,27 +58,20 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
         jDesktopPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Ingrese los Datos del Nuevo Empleado");
 
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Nombre");
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Apellido");
 
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Correo");
 
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Contraseña");
 
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Reingrese Contraseña");
 
         jSeparator1.setForeground(new java.awt.Color(102, 102, 102));
 
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Rol del Nuevo Trabajador");
 
         Cb_Rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trabajador", "Administrador", "Supervisor" }));
@@ -89,8 +85,15 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Rut");
+
+        Cb_Area.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Cb_AreaActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Area de Trabajo del Nuevo Trabajador");
 
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -110,6 +113,8 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
         jDesktopPane1.setLayer(Agregar, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel11, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(RutUser, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(Cb_Area, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabel8, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -142,7 +147,8 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
                                             .addGap(122, 122, 122)
                                             .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(jLabel6)
-                                                .addComponent(VerificacionPass, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                                .addComponent(VerificacionPass, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel8))))))
                             .addContainerGap()))
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -165,9 +171,13 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(ApellidoUser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
+                        .addGap(142, 142, 142)
                         .addComponent(Agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(Cb_Area, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,9 +216,13 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PasswordUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(VerificacionPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addGap(4, 4, 4)
+                .addComponent(Cb_Area, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
                 .addComponent(Agregar)
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -299,8 +313,100 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
                 }
             }
         }
+        try {
+        // Crear objeto Usuario
+        Usuario nuevoUsuario = new Usuario();
+        nuevoUsuario.setRut(RutUser.getText().trim());
+        nuevoUsuario.setNombre(NombreUser.getText().trim());
+        nuevoUsuario.setApellido(ApellidoUser.getText().trim());
+        nuevoUsuario.setCorreo(CorreoUser.getText().trim());
+        nuevoUsuario.setContrasena(PasswordUser.getText());
+        
+        // NUEVA FUNCIONALIDAD: Obtener área seleccionada
+        int idAreaSeleccionada = obtenerIdAreaSeleccionada();
+        nuevoUsuario.setId_areatrabajo(idAreaSeleccionada);
+        
+        // Obtener rol seleccionado (código existente)
+        // ... código del rol ...
+        
+        // Crear en base de datos
+        Comm_BD bd = new Comm_BD();
+        bd.DAO_crearUsuarioConArea(nuevoUsuario);
+        
+        JOptionPane.showMessageDialog(this,
+            "Usuario creado exitosamente\\n" +
+            "Nombre: " + nuevoUsuario.getNombre() + " " + nuevoUsuario.getApellido() + "\\n" +
+            "Área: " + ((AreaTrabajo) Cb_Area.getSelectedItem()).getNombre(),
+            "Usuario Creado",
+            JOptionPane.INFORMATION_MESSAGE);
+            
+        // Limpiar formulario
+        limpiarFormulario();
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al crear usuario: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+
+
     }//GEN-LAST:event_AgregarActionPerformed
 
+    private void Cb_AreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cb_AreaActionPerformed
+         try {
+        // Limpiar el ComboBox
+        Cb_Area.removeAllItems();
+        
+        
+        
+        // Obtener áreas de la base de datos
+        Comm_BD bd = new Comm_BD();
+        List<AreaTrabajo> areas = bd.obtenerAreasActivas();
+        
+        // Llenar el ComboBox
+        for (AreaTrabajo area : areas) {
+        Cb_Area.addItem(area);
+}
+
+        
+        System.out.println("ComboBox de áreas cargado con " + areas.size() + " elementos");
+        
+    } catch (Exception e) {
+        System.err.println("Error al cargar áreas: " + e.getMessage());
+        e.printStackTrace();
+        
+        
+    }
+    }//GEN-LAST:event_Cb_AreaActionPerformed
+    private int obtenerIdAreaSeleccionada() {
+    Object selectedItem = Cb_Area.getSelectedItem();
+    
+    if (selectedItem == null || selectedItem instanceof String) {
+        return 0; // Sin área asignada o opción por defecto seleccionada
+    }
+    
+    if (selectedItem instanceof AreaTrabajo) {
+        return ((AreaTrabajo) selectedItem).getId_areatrabajo();
+    }
+    
+    return 0; // Por defecto
+}   private void limpiarFormulario() {
+    // Limpiar campos de texto (ajusta los nombres según tus componentes)
+    RutUser.setText("");
+    NombreUser.setText("");
+    ApellidoUser.setText("");
+    CorreoUser.setText("");
+    PasswordUser.setText("");
+    VerificacionPass.setText("");
+    
+    // Resetear ComboBox de área
+    Cb_Area.setSelectedIndex(0); // Seleccionar "-- Seleccione Área --"
+    
+    System.out.println("Formulario limpiado");
+}
+    
     /**
      * @param args the command line arguments
      */
@@ -308,6 +414,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Agregar;
     private javax.swing.JTextField ApellidoUser;
+    private javax.swing.JComboBox<String> Cb_Area;
     private javax.swing.JComboBox<String> Cb_Rol;
     private javax.swing.JTextField CorreoUser;
     private javax.swing.JTextField NombreUser;
@@ -323,6 +430,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables

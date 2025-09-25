@@ -404,52 +404,58 @@ public class Interfaz_RevisionLicencias extends javax.swing.JFrame {
     }
     
     private void btn_DenegarActionPerformed(java.awt.event.ActionEvent evt) {
-        int filaSeleccionada = tabla_Solicitudes.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una solicitud primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+    int filaSeleccionada = tabla_Solicitudes.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Seleccione una solicitud primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    Integer idLicencia = (Integer) modeloTabla.getValueAt(filaSeleccionada, 0);
+    String empleado = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
+    
+    String motivo = JOptionPane.showInputDialog(this,
+        "Ingrese el motivo de la denegación para " + empleado + ":",
+        "Motivo de Denegación",
+        JOptionPane.QUESTION_MESSAGE);
+    
+    if (motivo != null && !motivo.trim().isEmpty()) {
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Está seguro de denegar la solicitud de licencia de " + empleado + "\n" +
+            "Motivo: " + motivo,
+            "Confirmar Denegación",
+            JOptionPane.YES_NO_OPTION);
         
-        Integer idLicencia = (Integer) modeloTabla.getValueAt(filaSeleccionada, 0);
-        String empleado = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
-        
-        String motivo = JOptionPane.showInputDialog(this,
-            "Ingrese el motivo de la denegación para " + empleado + ":",
-            "Motivo de Denegación",
-            JOptionPane.QUESTION_MESSAGE);
-        
-        if (motivo != null && !motivo.trim().isEmpty()) {
-            int confirmacion = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro de denegar la solicitud de licencia de " + empleado + "?\\n" +
-                "Motivo: " + motivo,
-                "Confirmar Denegación",
-                JOptionPane.YES_NO_OPTION);
-            
-            if (confirmacion == JOptionPane.YES_OPTION) {
-                try {
-                    if (bd.actualizarEstadoLicencia(idLicencia, "REJECTED")) {
-                        JOptionPane.showMessageDialog(this,
-                            "Solicitud denegada para: " + empleado + "\\n" +
-                            "Motivo: " + motivo,
-                            "Denegación Registrada",
-                            JOptionPane.INFORMATION_MESSAGE);
-                        
-                        cargarSolicitudesPendientes(); // Refrescar lista
-                    } else {
-                        JOptionPane.showMessageDialog(this,
-                            "Error al denegar la solicitud",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (Exception ex) {
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                // NUEVA FUNCIONALIDAD: Guardar motivo de denegación
+                if (bd.actualizarEstadoLicenciaConMotivo(idLicencia, "REJECTED", motivo)) {
                     JOptionPane.showMessageDialog(this,
-                        "Error inesperado: " + ex.getMessage(),
+                        "Solicitud denegada para: " + empleado + "\n" +
+                        "Motivo: " + motivo,
+                        "Denegación Registrada",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    
+                    cargarSolicitudesPendientes(); // Refrescar lista
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        "Error al denegar la solicitud",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
                 }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,
+                    "Error inesperado: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
+    } else {
+        JOptionPane.showMessageDialog(this,
+            "Debe ingresar un motivo para denegar la solicitud",
+            "Motivo Requerido",
+            JOptionPane.WARNING_MESSAGE);
     }
+}
     
     private void btn_RefrescarActionPerformed(java.awt.event.ActionEvent evt) {
         cargarSolicitudesPendientes();
