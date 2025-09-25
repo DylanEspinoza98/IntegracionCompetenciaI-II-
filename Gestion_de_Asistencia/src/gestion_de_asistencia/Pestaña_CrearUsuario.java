@@ -353,7 +353,7 @@ public class Pestaña_CrearUsuario extends javax.swing.JFrame {
         bd.DAO_crearUsuarioConArea(nuevoUsuario);
         
         JOptionPane.showMessageDialog(this,
-            "Usuario creado exitosamente\\n" +
+            "Usuario creado exitosamente \n" +
             "Nombre: " + nuevoUsuario.getNombre() + " " + nuevoUsuario.getApellido() + "\\n" +
             "Área: " + ((AreaTrabajo) Cb_Area.getSelectedItem()).getNombre(),
             "Usuario Creado",
