@@ -1,6 +1,8 @@
 package gestion_de_asistencia;
 import Clases.Usuario;
 import Clases_BD.Comm_BD;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -9,6 +11,7 @@ import javax.swing.JOptionPane;
  */
 public class Interfaz_Principal extends javax.swing.JFrame {
     Comm_BD Bd;
+     
 
     /**
      * Creates new form Interfaz_InicioSesion
@@ -16,6 +19,7 @@ public class Interfaz_Principal extends javax.swing.JFrame {
     public Interfaz_Principal() {
         initComponents();
         Bd = new Comm_BD();
+         migrarContrasenasSiEsNecesario();
         
     }
 
@@ -45,18 +49,15 @@ public class Interfaz_Principal extends javax.swing.JFrame {
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 0));
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Bienvenido al registro de asistencia ");
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Inicie Sesion");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Correo Profesional");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Contraseña");
 
         btn_inicioSesion.setText("Iniciar Sesion");
@@ -163,7 +164,17 @@ public class Interfaz_Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Credenciales inválidas");
         }
     }//GEN-LAST:event_btn_inicioSesionActionPerformed
-
+    private void migrarContrasenasSiEsNecesario() {
+    File flag = new File("migracion_terminada.flag");
+    if (!flag.exists()) {
+        Bd.migrarContrasenasAEcrypt();
+        try {
+            flag.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
     /**
      * @param args the command line arguments
      */
