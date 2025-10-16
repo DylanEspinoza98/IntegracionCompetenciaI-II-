@@ -1,9 +1,12 @@
 package Clases;
 
+
 /**
  *
  * @author dolan
  */
+import org.mindrot.jbcrypt.BCrypt;
+
 public class Usuario {
     private int Id;
     private String Rut;
@@ -18,7 +21,7 @@ public class Usuario {
     public Usuario() {
     }
     
-    // Constructor completo (NUEVO)
+    // Constructor completo 
     public Usuario(String rut, String nombre, String apellido, String correo, 
                    String contrasena, int idrol, int id_areatrabajo) {
         this.Rut = rut;
@@ -87,9 +90,9 @@ public class Usuario {
         return Contrasena;
     }
 
-    public void setContrasena(String Contrasena) {
-        this.Contrasena = Contrasena;
-    }
+    public void setContrasena(String contrasenaPlain) {
+    this.Contrasena = contrasenaPlain;   // 
+}
 
     // Rol - mantener compatibilidad con código existente
     public int getRol() {
@@ -100,7 +103,7 @@ public class Usuario {
         this.idrol = idrol;
     }
     
-    // NUEVOS MÉTODOS para área de trabajo
+   
     public int getId_areatrabajo() {
         return id_areatrabajo;
     }
@@ -115,9 +118,13 @@ public class Usuario {
     }
     
     // Verificador para Validar LOGIN (existente)
-    public boolean validarLogin(String correo, String contrasena) {
-        return this.Correo.equals(correo) && this.Contrasena.equals(contrasena);
+   public boolean validarLogin(String correo, String contrasenaPlain) {
+    if (!this.Correo.equals(correo)) {
+        return false;
     }
+    // Compara la contraseña ingresada con el hash almacenado
+    return BCrypt.checkpw(contrasenaPlain, this.Contrasena);
+}
     
     // Método toString para debugging
     @Override
