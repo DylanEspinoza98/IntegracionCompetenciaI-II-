@@ -1,7 +1,6 @@
 package Clases_BD;
 import Clases.Usuario;
 import Clases.AreaTrabajo;
-import Clases.Asistencia;
 import Clases.Licencia;
 import static Clases_BD.Conn_BD.getConnection;
 //Import para Sql
@@ -14,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
-import java.time.LocalDate;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -29,56 +28,59 @@ public class Comm_BD {
     };
     
     //Extraer Usuario verificando si las contraseñas coinciden
-    public Usuario VerificacionUsuario(String correo, String contrasena) {
+    public Usuario VerificacionUsuario(String correo, String contrasenaIngresada) {
     Usuario usuarioEncontrado = null;
-
     try {
-        Statement st = Con.createStatement();
-        ResultSet rs = st.executeQuery(
-            "SELECT u.id_usuario AS Id,u.rut as Rut , u.nombre AS Nombre , u.apellido as Apellido ,u.correo AS Correo, " +
-            "u.contrasena AS Contrasena, u.id_rol AS Rol FROM usuario u"
-        );
+        // Prepara statement para buscar usuario por correo
+        String sql = "SELECT id_usuario, rut, nombre, apellido, correo, contrasena, id_rol, id_areatrabajo FROM Usuario WHERE correo = ?";
+        PreparedStatement ps = Con.prepareStatement(sql);
+        ps.setString(1, correo);
+        ResultSet rs = ps.executeQuery();
 
-        while (rs.next()) {
+        if (rs.next()) {
             Usuario u = new Usuario();
-            u.setId(rs.getInt("Id"));
-            u.setRut(rs.getString("Rut"));
-            u.setNombre(rs.getString("Nombre"));
-            u.setApellido(rs.getString("Apellido"));
-            u.setCorreo(rs.getString("Correo"));
-            u.setContrasena(rs.getString("Contrasena"));
-            u.setRol(rs.getInt("Rol"));
-
-            if (u.validarLogin(correo, contrasena)) {
-                usuarioEncontrado = u; // lo guardamos
-                break; // dejamos de buscar
+            u.setId(rs.getInt("id_usuario"));
+            u.setRut(rs.getString("rut"));
+            u.setNombre(rs.getString("nombre"));
+            u.setApellido(rs.getString("apellido"));
+            u.setCorreo(rs.getString("correo"));
+            u.setContrasena(rs.getString("contrasena")); // hash almacenado
+            u.setRol(rs.getInt("id_rol"));
+            u.setId_areatrabajo(rs.getInt("id_areatrabajo"));
+            System.out.println("Probando login para correo: " + correo);
+System.out.println("Contraseña escrita: [" + contrasenaIngresada + "]");
+System.out.println("Hash guardado: [" + u.getContrasena() + "]");
+System.out.println("checkpw: " + BCrypt.checkpw(contrasenaIngresada, u.getContrasena()));
+            // Verificar password usando BCrypt
+            if (BCrypt.checkpw(contrasenaIngresada, u.getContrasena())) {
+                usuarioEncontrado = u; // Login exitoso
             }
         }
+        rs.close();
+        ps.close();
     } catch (SQLException ex) {
         Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    return usuarioEncontrado; // si es null, no existe
-    }
+    return usuarioEncontrado; // null si falla
+}
     
     //Dao para crear nuevos usuarios
     public void DAO_crearUsuario(Usuario U) {
-        String Sql = "Insert into usuario (rut, nombre, apellido, correo, contrasena, activo ,id_rol) Values (?,?,?,?,?,?,?);";
-                                           
-        try (PreparedStatement ps = Con.prepareStatement(Sql);) {
+        String sql = "INSERT INTO Usuario (rut, nombre, apellido, correo, contrasena, activo, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = Con.prepareStatement(sql);
             ps.setString(1, U.getRut());
             ps.setString(2, U.getNombre());
             ps.setString(3, U.getApellido());
             ps.setString(4, U.getCorreo());
-            ps.setString(5,U.getContrasena());
+            String hash = BCrypt.hashpw(U.getContrasena(), BCrypt.gensalt()); // HASH con bcrypt
+            ps.setString(5, hash);
             ps.setBoolean(6, true);
-            ps.setInt(7,U.getRol());
-            
-            
+            ps.setInt(7, U.getRol());
             ps.executeUpdate();
-        
         } catch (SQLException ex) {
-        Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -413,13 +415,13 @@ public class Comm_BD {
     try {
         Con = getConnection();
         if (Con != null) {
-            String sql = "SELECT idrol FROM Usuario WHERE rut = ?";
+            String sql = "SELECT id_rol FROM Usuario WHERE rut = ?";
             pst = Con.prepareStatement(sql);
             pst.setString(1, rut);
             rs = pst.executeQuery();
             
             if (rs.next()) {
-                rol = rs.getInt("idrol");
+                rol = rs.getInt("id_rol");
                 System.out.println("Rol encontrado para RUT " + rut + ": " + rol);
             }
         }
@@ -531,35 +533,28 @@ public class Comm_BD {
 
 // MÉTODO MODIFICADO PARA CREAR USUARIO CON ÁREA
 public void DAO_crearUsuarioConArea(Usuario U) {
-    String sql = "INSERT INTO usuario (rut, nombre, apellido, correo, contrasena, activo, id_rol, id_areatrabajo) VALUES (?,?,?,?,?,?,?,?)";
-    
-    try (PreparedStatement ps = Con.prepareStatement(sql)) {
-        ps.setString(1, U.getRut());
-        ps.setString(2, U.getNombre());
-        ps.setString(3, U.getApellido());
-        ps.setString(4, U.getCorreo());
-        ps.setString(5, U.getContrasena());
-        ps.setBoolean(6, true);
-        ps.setInt(7, U.getRol());
-        
-        // NUEVA FUNCIONALIDAD: Incluir área de trabajo
-        if (U.getId_areatrabajo() > 0) {
-            ps.setInt(8, U.getId_areatrabajo());
-        } else {
-            ps.setNull(8, java.sql.Types.INTEGER);
+        String sql = "INSERT INTO Usuario (rut, nombre, apellido, correo, contrasena, activo, id_rol, id_areatrabajo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = Con.prepareStatement(sql);
+            ps.setString(1, U.getRut());
+            ps.setString(2, U.getNombre());
+            ps.setString(3, U.getApellido());
+            ps.setString(4, U.getCorreo());
+            String hash = BCrypt.hashpw(U.getContrasena(), BCrypt.gensalt()); // HASH con bcrypt
+            ps.setString(5, hash);
+            ps.setBoolean(6, true);
+            ps.setInt(7, U.getRol());
+            if (U.getId_areatrabajo() != 0) {
+                ps.setInt(8, U.getId_areatrabajo());
+            } else {
+                ps.setNull(8, java.sql.Types.INTEGER);
+            }
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, "Error al crear usuario", ex);
+            throw new RuntimeException("Error al crear usuario: " + ex.getMessage());
         }
-        
-        int filasAfectadas = ps.executeUpdate();
-        
-        if (filasAfectadas > 0) {
-            System.out.println("Usuario creado exitosamente con área: " + U.getId_areatrabajo());
-        }
-        
-    } catch (SQLException ex) {
-        Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, "Error al crear usuario", ex);
-        throw new RuntimeException("Error al crear usuario: " + ex.getMessage());
     }
-}
 
 // MÉTODO PARA OBTENER ÁREA POR ID
 public AreaTrabajo obtenerAreaPorId(int id) {
@@ -584,50 +579,48 @@ public AreaTrabajo obtenerAreaPorId(int id) {
     
     return area;
 }
-
-public List<Asistencia> obtenerAsistenciasPorMes(String rut, int mes, int anio) throws SQLException {
-    List<Asistencia> listaAsistencias = new ArrayList<>();
-    
-
-    LocalDate primerDia = LocalDate.of(anio, mes, 1);
-    LocalDate ultimoDia = primerDia.withDayOfMonth(primerDia.lengthOfMonth());
-
-    String sql = "SELECT id_asistencia, rut, h_entrada, h_salida, fecha_actual, id_tipo_asistencia, justificacion " +
-                 "FROM Asistencia " +
-                 "WHERE rut = ? AND fecha_actual BETWEEN ? AND ? " +
-                 "ORDER BY fecha_actual";
-
-    try (PreparedStatement ps = Con.prepareStatement(sql)) {
-        ps.setString(1, rut);
-        ps.setDate(2, Date.valueOf(primerDia));
-        ps.setDate(3, Date.valueOf(ultimoDia));
-
-        ResultSet rs = ps.executeQuery();
-
+public void migrarContrasenasAEcrypt() {
+    try {
+        // Obtener todos los usuarios
+        Statement st = Con.createStatement();
+        ResultSet rs = st.executeQuery("SELECT rut, contrasena FROM Usuario");
+        
         while (rs.next()) {
-            Asistencia a = new Asistencia ();
+            String rut = rs.getString("rut");
+            String contrasenaActual = rs.getString("contrasena");
             
-            a.setId_tipo_asistencia(rs.getInt("id_asistencia"));
-            a.setRut(rs.getString("rut"));
-            a.setH_entrada(rs.getTime("h_entrada"));
-            a.setH_salida(rs.getTime("h_salida"));
-            a.setFecha_actual(rs.getDate("fecha_actual"));
-            a.setId_tipo_asistencia(rs.getInt("id_tipo_asistencia"));
-            a.setJustificacion(rs.getString("justificacion"));
+            // Comprobar si la contraseña ya es un hash bcrypt
+            if (contrasenaActual == null || contrasenaActual.startsWith("$2a$")) {
+                // Ya está cifrada, saltar
+                continue;
+            }
             
-            listaAsistencias.add(a);
+            // Generar hash bcrypt de la contraseña existente
+            String hash = BCrypt.hashpw(contrasenaActual, BCrypt.gensalt());
+            
+            // Actualizar la contraseña en la base de datos
+            String sqlUpdate = "UPDATE Usuario SET contrasena = ? WHERE rut = ?";
+            PreparedStatement ps = Con.prepareStatement(sqlUpdate);
+            ps.setString(1, hash);
+            ps.setString(2, rut);
+            ps.executeUpdate();
+            ps.close();
         }
-        return listaAsistencias;
-    } catch (SQLException e) {
-        System.out.println("Error al cerrar conexiones: " + e.getMessage());
+        
+        rs.close();
+        st.close();
+    } catch (SQLException ex) {
+        Logger.getLogger(Comm_BD.class.getName()).log(Level.SEVERE, "Error en migracion de contraseñas", ex);
     }
-        return listaAsistencias = null;
-   }
 }
 
 
 
 
 
+
+
+
+}
     
     
